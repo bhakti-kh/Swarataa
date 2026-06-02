@@ -1,0 +1,30 @@
+.page { display: flex; flex-direction: column; gap: 24px; max-width: 1000px; }
+.header h1 { font-family: 'Playfair Display', serif; font-size: 26px; color: var(--text-dark); }
+.header p { font-size: 13px; color: var(--text-light); margin-top: 4px; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.statIcon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+.statLabel { font-size: 10px; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text-light); margin-bottom: 3px; }
+.statValue { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; }
+.charts { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.cardTitle { font-family: 'Playfair Display', serif; font-size: 16px; color: var(--text-dark); margin-bottom: 2px; }
+.cardSub { font-size: 12px; color: var(--text-light); margin-bottom: 16px; }
+.chartWrap { height: 220px; }
+.bottom { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
+.pieWrap { height: 160px; }
+.pieLegend { display: flex; justify-content: center; gap: 16px; margin-top: 8px; }
+.legendItem { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-mid); }
+.legendDot { width: 10px; height: 10px; border-radius: 50%; }
+.achievements { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.achievement { display: flex; align-items: center; gap: 10px; padding: 12px; border-radius: 10px; }
+.earned { background: rgba(74,124,106,0.06); border: 1px solid rgba(74,124,106,0.2); }
+.locked { background: rgba(26,74,74,0.03); opacity: 0.55; }
+.achieveIcon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: rgba(26,74,74,0.06); }
+.achieveIconEarned { background: rgba(74,124,106,0.12); }
+.achieveTitle { font-size: 13px; font-weight: 600; color: var(--text-dark); }
+.achieveDesc { font-size: 11px; color: var(--text-light); margin-top: 1px; }
+@media (max-width: 900px) {
+  .stats { grid-template-columns: 1fr 1fr; }
+  .charts { grid-template-columns: 1fr; }
+  .bottom { grid-template-columns: 1fr; }
+  .achievements { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,221 @@
+.layout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--warm-cream);
+}
+
+/* ── Mobile toggle ── */
+.mobileToggle {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 50;
+  background: var(--deep-teal);
+  color: var(--warm-cream);
+  border: none;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: none;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 30;
+  display: none;
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 240px;
+  background: var(--deep-teal);
+  display: flex;
+  flex-direction: column;
+  z-index: 40;
+  transition: transform 0.3s ease;
+  box-shadow: 2px 0 16px rgba(0,0,0,0.15);
+}
+
+.sidebarLogo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.logoIcon {
+  width: 38px;
+  height: 38px;
+  background: linear-gradient(135deg, var(--saffron), var(--gold));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.logoName {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--warm-cream);
+  line-height: 1.2;
+}
+
+.logoSub {
+  font-size: 11px;
+  color: rgba(253,246,236,0.5);
+  margin-top: 2px;
+}
+
+/* ── Nav ── */
+.nav {
+  flex: 1;
+  padding: 12px 0;
+  overflow-y: auto;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(253,246,236,0.65);
+  text-decoration: none;
+  transition: all 0.15s;
+  border-right: 2px solid transparent;
+}
+
+.navItem:hover {
+  color: var(--warm-cream);
+  background: rgba(255,255,255,0.06);
+}
+
+.navItemActive {
+  color: var(--saffron) !important;
+  background: rgba(232,135,58,0.12) !important;
+  border-right-color: var(--saffron) !important;
+}
+
+.navDivider {
+  margin: 8px 16px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.navQuiz {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--saffron);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.navQuiz:hover { color: var(--gold); }
+
+/* ── Footer ── */
+.sidebarFooter {
+  padding: 16px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.streak {
+  background: rgba(255,255,255,0.06);
+  border-radius: 10px;
+  padding: 12px;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.streakLabel {
+  display: block;
+  font-size: 10px;
+  color: rgba(253,246,236,0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.streakValue {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  color: var(--saffron);
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.userName {
+  font-size: 12px;
+  color: rgba(253,246,236,0.7);
+  flex: 1;
+  truncate: true;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.signOut {
+  background: none;
+  border: none;
+  color: rgba(253,246,236,0.4);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  transition: color 0.15s;
+}
+
+.signOut:hover { color: rgba(253,246,236,0.8); }
+
+/* ── Main ── */
+.main {
+  flex: 1;
+  margin-left: 240px;
+  min-height: 100vh;
+  padding: 32px;
+  max-width: calc(100vw - 240px);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .mobileToggle { display: flex; }
+  .overlay { display: block; }
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  .sidebarOpen {
+    transform: translateX(0);
+  }
+  .main {
+    margin-left: 0;
+    max-width: 100vw;
+    padding: 24px 16px;
+    padding-top: 64px;
+  }
+}

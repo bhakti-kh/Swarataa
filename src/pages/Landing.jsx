@@ -1,7 +1,9 @@
+import { useNavigate } from 'react-router-dom'
 import { signOutUser } from '../utils/firebase'
 import styles from './Landing.module.css'
 
-export default function Landing({ navigate, user }) {
+export default function Landing({ user }) {
+  const navigate = useNavigate()
   return (
     <div className={styles.page}>
       {/* Nav */}
@@ -11,7 +13,7 @@ export default function Landing({ navigate, user }) {
           <span className={styles.logoText}>Swarataa</span>
         </div>
         <div className={styles.navRight}>
-          <button className="btn-secondary" onClick={() => navigate('riyaz')}>
+          <button className="btn-secondary" onClick={() => navigate('/app/riyaz')}>
             Riyaz Framework
           </button>
           {user ? (
@@ -21,7 +23,7 @@ export default function Landing({ navigate, user }) {
               <button className={styles.signOut} onClick={() => signOutUser()}>Sign out</button>
             </div>
           ) : (
-            <button className="btn-primary" onClick={() => navigate('login')}>Sign in</button>
+            <button className="btn-primary" onClick={() => navigate('/login')}>Sign in</button>
           )}
         </div>
       </nav>
@@ -39,10 +41,10 @@ export default function Landing({ navigate, user }) {
             blending Ayurveda, pranayama, and modern voice science into one guided practice.
           </p>
           <div className={styles.heroCta}>
-            <button className="btn-primary" onClick={() => navigate('quiz')}>
+            <button className="btn-primary" onClick={() => navigate('/quiz')}>
               Discover Your Prakriti →
             </button>
-            <button className="btn-secondary" onClick={() => navigate('riyaz')}>
+            <button className="btn-secondary" onClick={() => navigate('/app/riyaz')}>
               Explore Riyaz Framework
             </button>
           </div>
@@ -82,7 +84,7 @@ export default function Landing({ navigate, user }) {
             Our AI generates a personalized riyaz plan, Ayurvedic recommendations,
             and your SwarSuraksha herb kit — in under 2 minutes.
           </p>
-          <button className="btn-primary" onClick={() => navigate('quiz')}>
+          <button className="btn-primary" onClick={() => navigate('/quiz')}>
             Take the Prakriti Quiz
           </button>
           <p className={styles.disclaimer}>

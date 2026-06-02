@@ -1,0 +1,43 @@
+.page { display: flex; flex-direction: column; gap: 24px; max-width: 900px; }
+.header h1 { font-family: 'Playfair Display', serif; font-size: 26px; color: var(--text-dark); }
+.header p { font-size: 13px; color: var(--text-light); margin-top: 4px; }
+.banner { background: var(--deep-teal); border-radius: var(--radius); padding: 28px 32px; }
+.bannerLabel { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: rgba(253,246,236,0.5); margin-bottom: 6px; }
+.bannerTitle { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--warm-cream); margin-bottom: 6px; }
+.bannerSub { font-size: 13px; color: rgba(253,246,236,0.65); }
+.aiKit { background: var(--deep-teal); border-radius: var(--radius); padding: 24px; }
+.aiKitLabel { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: rgba(253,246,236,0.5); margin-bottom: 4px; }
+.aiKitName { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--warm-cream); margin-bottom: 16px; }
+.aiHerbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+.aiHerb { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 14px; }
+.aiHerbName { font-size: 13px; font-weight: 600; color: var(--warm-cream); margin-bottom: 4px; }
+.aiHerbForm { font-size: 10px; text-transform: uppercase; letter-spacing: 0.3px; color: var(--saffron); margin-bottom: 6px; }
+.aiHerbBenefit { font-size: 11px; color: rgba(253,246,236,0.55); line-height: 1.5; }
+.aiGargle { background: rgba(255,255,255,0.07); border-left: 2px solid var(--saffron); padding: 12px 16px; border-radius: 0 8px 8px 0; font-size: 13px; color: rgba(253,246,236,0.8); }
+.tabs { display: flex; gap: 8px; align-items: center; }
+.tab { padding: 8px 18px; border-radius: 8px; border: none; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; background: rgba(26,74,74,0.06); color: var(--text-mid); transition: all 0.15s; }
+.tab:hover { background: rgba(26,74,74,0.1); }
+.tabActive { background: var(--deep-teal) !important; color: var(--warm-cream) !important; }
+.tabQuiz { margin-left: auto; display: flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 8px; border: 1px solid rgba(74,124,106,0.3); background: transparent; font-size: 12px; color: var(--soft-green); cursor: pointer; }
+.productsGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.productCard { display: flex; flex-direction: column; gap: 12px; transition: transform 0.15s; }
+.productCard:hover { transform: translateY(-3px); }
+.productTop { display: flex; justify-content: space-between; align-items: flex-start; }
+.productIcon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; }
+.rating { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--saffron); }
+.productName { font-family: 'Playfair Display', serif; font-size: 16px; color: var(--text-dark); }
+.productDesc { font-size: 12px; color: var(--text-mid); line-height: 1.5; }
+.benefits { display: flex; flex-direction: column; gap: 6px; }
+.benefit { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-mid); }
+.usage { background: rgba(26,74,74,0.05); border-radius: 8px; padding: 10px 12px; }
+.usageLabel { display: flex; align-items: center; gap: 5px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-light); margin-bottom: 4px; }
+.usage p { font-size: 12px; color: var(--text-mid); margin: 0; }
+.viewBtn { width: 100%; padding: 10px; border-radius: 10px; border: none; color: white; font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity 0.15s; }
+.viewBtn:hover { opacity: 0.85; }
+.assessCard { max-width: 600px; }
+.assessCard h3 { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--text-dark); margin-bottom: 8px; }
+.assessSub { font-size: 13px; color: var(--text-mid); }
+@media (max-width: 700px) {
+  .productsGrid { grid-template-columns: 1fr; }
+  .aiHerbs { grid-template-columns: 1fr; }
+}

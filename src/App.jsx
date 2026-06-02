@@ -1,19 +1,25 @@
 import { useState, useEffect } from 'react'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from './utils/firebase'
 import Landing from './pages/Landing'
+import Login from './pages/Login'
 import PrakritiQuiz from './pages/PrakritiQuiz'
 import Results from './pages/Results'
+import AppLayout from './pages/AppLayout'
+import Welcome from './pages/Welcome'
+import Dashboard from './pages/Dashboard'
 import RiyazFramework from './pages/RiyazFramework'
-import Login from './pages/Login'
+import HerbSupport from './pages/HerbSupport'
+import Progress from './pages/Progress'
+import Library from './pages/Library'
+import Community from './pages/Community'
 import './index.css'
 
 export default function App() {
-  const [page, setPage] = useState('landing')
-  const [quizAnswers, setQuizAnswers] = useState(null)
-  const [aiPlan, setAiPlan] = useState(null)
   const [user, setUser] = useState(null)
   const [authLoading, setAuthLoading] = useState(true)
+  const [aiPlan, setAiPlan] = useState(null)
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (u) => {
@@ -22,15 +28,6 @@ export default function App() {
     })
     return unsub
   }, [])
-
-  const navigate = (to, data = null) => {
-    if (to === 'results' && data) {
-      setQuizAnswers(data.answers)
-      setAiPlan(data.plan)
-    }
-    setPage(to)
-    window.scrollTo(0, 0)
-  }
 
   if (authLoading) {
     return (
@@ -43,18 +40,29 @@ export default function App() {
     )
   }
 
-  // Quiz requires sign-in
-  if (page === 'quiz' && !user) {
-    return <Login navigate={navigate} redirectTo="quiz" />
-  }
-
   return (
-    <div>
-      {page === 'landing' && <Landing navigate={navigate} user={user} />}
-      {page === 'quiz' && <PrakritiQuiz navigate={navigate} user={user} />}
-      {page === 'results' && <Results navigate={navigate} answers={quizAnswers} plan={aiPlan} user={user} />}
-      {page === 'riyaz' && <RiyazFramework navigate={navigate} user={user} />}
-      {page === 'login' && <Login navigate={navigate} />}
-    </div>
+    <BrowserRouter>
+      <Routes>
+        {/* Public pages — no sidebar */}
+        <Route path="/" element={<Landing user={user} />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/quiz" element={user ? <PrakritiQuiz setAiPlan={setAiPlan} /> : <Navigate to="/login" />} />
+        <Route path="/results" element={<Results plan={aiPlan} />} />
+
+        {/* App pages — with sidebar */}
+        <Route path="/app" element={<AppLayout user={user} />}>
+          <Route index element={<Navigate to="/app/welcome" />} />
+          <Route path="welcome" element={<Welcome user={user} />} />
+          <Route path="dashboard" element={<Dashboard user={user} plan={aiPlan} />} />
+          <Route path="riyaz" element={<RiyazFramework />} />
+          <Route path="herbs" element={<HerbSupport plan={aiPlan} />} />
+          <Route path="progress" element={<Progress />} />
+          <Route path="library" element={<Library />} />
+          <Route path="community" element={<Community />} />
+        </Route>
+
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </BrowserRouter>
   )
 }

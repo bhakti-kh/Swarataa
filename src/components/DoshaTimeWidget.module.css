@@ -1,0 +1,32 @@
+.header { padding: 20px 24px; display: flex; justify-content: space-between; align-items: flex-start; }
+.headerLeft { display: flex; align-items: flex-start; gap: 14px; }
+.doshaIconWrap { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.headerLabel { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-light); margin-bottom: 3px; }
+.headerTitle { font-family: 'Playfair Display', serif; font-size: 19px; line-height: 1.2; margin-bottom: 2px; }
+.headerElement { font-size: 11px; color: var(--text-light); }
+.headerRight { text-align: right; }
+.time { display: flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; color: var(--text-dark); justify-content: flex-end; }
+.timeRange { font-size: 11px; color: var(--text-light); margin-top: 2px; }
+
+.body { padding: 20px 24px; display: flex; flex-direction: column; gap: 16px; }
+
+.qualities { display: flex; gap: 8px; flex-wrap: wrap; }
+.quality { font-size: 11px; font-weight: 500; padding: 4px 12px; border-radius: 50px; border: 1px solid; }
+
+.doshaSection {}
+.doshaSectionHeader { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; }
+.doshaSectionLabel { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-light); }
+.doshaBars { display: flex; flex-direction: column; gap: 8px; }
+.doshaBarRow {}
+.doshaBarLabel { display: flex; align-items: center; gap: 5px; margin-bottom: 5px; }
+.doshaName { font-size: 12px; font-weight: 500; color: var(--text-dark); }
+.dominant { font-size: 10px; color: var(--text-light); }
+.activeDot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-left: 2px; animation: pulse 1.5s ease-in-out infinite; }
+.doshaTrack { height: 6px; background: rgba(26,74,74,0.08); border-radius: 3px; overflow: hidden; }
+.doshaFill { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
+
+.advice { background: rgba(26,74,74,0.04); border-radius: 10px; padding: 14px 16px; }
+.adviceLabel { display: flex; align-items: center; gap: 6px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-light); margin-bottom: 6px; }
+.adviceText { font-size: 13px; color: var(--text-mid); line-height: 1.6; }
+
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }

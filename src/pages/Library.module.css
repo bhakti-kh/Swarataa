@@ -1,0 +1,18 @@
+.page { display: flex; flex-direction: column; gap: 24px; max-width: 900px; }
+.header h1 { font-family: 'Playfair Display', serif; font-size: 26px; color: var(--text-dark); }
+.header p { font-size: 13px; color: var(--text-light); margin-top: 4px; }
+.categories { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.catIcon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+.catLabel { font-size: 14px; font-weight: 600; color: var(--text-dark); margin-bottom: 4px; }
+.catCount { font-size: 12px; font-weight: 500; }
+.sectionTitle { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--text-dark); margin-bottom: 12px; }
+.resourceList { display: flex; flex-direction: column; gap: 8px; }
+.resource { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px !important; transition: transform 0.1s; }
+.resource:hover { transform: translateX(4px); }
+.resourceLeft { display: flex; align-items: center; gap: 14px; }
+.resourceIcon { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.resourceTitle { font-size: 14px; font-weight: 500; color: var(--text-dark); margin-bottom: 3px; }
+.resourceMeta { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-light); }
+.resourceCat { font-weight: 600; font-size: 11px; }
+.resourceDuration { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--text-light); white-space: nowrap; }
+@media (max-width: 700px) { .categories { grid-template-columns: 1fr 1fr; } }

@@ -88,3 +88,7 @@ h1, h2, h3 {
   box-shadow: var(--shadow);
   padding: 32px;
 }
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

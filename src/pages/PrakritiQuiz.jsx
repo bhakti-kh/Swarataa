@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { generatePlan } from '../utils/ai'
 import styles from './PrakritiQuiz.module.css'
 
@@ -105,7 +106,8 @@ const QUESTIONS = [
   },
 ]
 
-export default function PrakritiQuiz({ navigate }) {
+export default function PrakritiQuiz({ setAiPlan }) {
+  const navigate = useNavigate()
   const [current, setCurrent] = useState(0)
   const [answers, setAnswers] = useState({})
   const [loading, setLoading] = useState(false)
@@ -126,7 +128,8 @@ export default function PrakritiQuiz({ navigate }) {
       setError(null)
       try {
         const plan = await generatePlan(newAnswers, QUESTIONS)
-        navigate('results', { answers: newAnswers, plan })
+        setAiPlan(plan)
+        navigate('/results')
       } catch (e) {
         setError(`Error: ${e.message}`)
         setLoading(false)
@@ -151,7 +154,7 @@ export default function PrakritiQuiz({ navigate }) {
       <div className={styles.container}>
         {/* Header */}
         <div className={styles.header}>
-          <button className={styles.back} onClick={() => navigate('landing')}>
+          <button className={styles.back} onClick={() => navigate('/')}>
             ← Back
           </button>
           <div className={styles.stepLabel}>
