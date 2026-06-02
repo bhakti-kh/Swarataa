@@ -13,7 +13,7 @@ export default function Login() {
     setError(null)
     try {
       await signInWithGoogle()
-      navigate('/dashboard')
+      navigate('/quiz')
     } catch (e) {
       setError('Sign-in failed. Please try again.')
       setLoading(false)

@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { generatePlan } from '../utils/ai'
-import styles from './PrakritiQuiz.module.css'
 
 const QUESTIONS = [
   {
@@ -114,7 +113,7 @@ export default function PrakritiQuiz({ setQuizPlan }) {
   const navigate = useNavigate()
 
   const q = QUESTIONS[current]
-  const progress = ((current) / QUESTIONS.length) * 100
+  const progress = (current / QUESTIONS.length) * 100
 
   const handleSelect = async (option) => {
     const newAnswers = { ...answers, [q.id]: { label: option.label, dosha: option.dosha } }
@@ -130,7 +129,7 @@ export default function PrakritiQuiz({ setQuizPlan }) {
         setQuizPlan(plan)
         navigate('/results')
       } catch (e) {
-        setError(`Error: ${e.message}`)
+        setError(`${e.message}`)
         setLoading(false)
       }
     }
@@ -138,64 +137,86 @@ export default function PrakritiQuiz({ setQuizPlan }) {
 
   if (loading) {
     return (
-      <div className={styles.loadingPage}>
-        <div className={styles.loadingInner}>
-          <div className={styles.spinner} />
-          <h2>Analysing your prakriti...</h2>
-          <p>Our AI is reading your constitution and crafting your personalized vocal plan.</p>
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center px-6">
+          <div className="w-16 h-16 border-4 border-muted border-t-primary rounded-full animate-spin mx-auto mb-6" />
+          <h2 className="text-2xl mb-3 text-foreground" style={{ fontFamily: "'Playfair Display', serif" }}>
+            Analysing your prakriti...
+          </h2>
+          <p className="text-muted-foreground max-w-sm mx-auto">
+            Our AI is reading your constitution and crafting your personalized vocal plan.
+          </p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className={styles.page}>
-      <div className={styles.container}>
+    <div className="min-h-screen bg-background flex flex-col items-center justify-start py-10 px-4">
+      <div className="w-full max-w-xl">
+
         {/* Header */}
-        <div className={styles.header}>
-          <button className={styles.back} onClick={() => navigate('/')}>
+        <div className="flex justify-between items-center mb-4">
+          <button onClick={() => navigate('/')} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
             ← Back
           </button>
-          <div className={styles.stepLabel}>
-            Question {current + 1} of {QUESTIONS.length}
-          </div>
+          <span className="text-sm text-muted-foreground">
+            {current + 1} / {QUESTIONS.length}
+          </span>
         </div>
 
-        {/* Progress */}
-        <div className={styles.progressBar}>
-          <div className={styles.progressFill} style={{ width: `${progress}%` }} />
+        {/* Progress bar */}
+        <div className="h-1.5 bg-muted rounded-full mb-8 overflow-hidden">
+          <div
+            className="h-full bg-primary rounded-full transition-all duration-400"
+            style={{ width: `${progress}%` }}
+          />
         </div>
 
-        {/* Question */}
-        <div className={styles.card}>
-          <div className={styles.dimension}>{q.dimension}</div>
-          <h2 className={styles.question}>{q.question}</h2>
+        {/* Question card */}
+        <div className="bg-card border border-border rounded-2xl shadow-sm p-8">
+          <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">
+            {q.dimension}
+          </p>
+          <h2 className="text-xl text-foreground mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
+            {q.question}
+          </h2>
 
-          {error && <div className={styles.error}>{error}</div>}
+          {error && (
+            <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-3 text-sm text-yellow-800 mb-4">
+              {error}
+            </div>
+          )}
 
-          <div className={styles.options}>
+          <div className="space-y-3">
             {q.options.map((opt, i) => (
               <button
                 key={i}
-                className={`${styles.option} ${answers[q.id]?.label === opt.label ? styles.selected : ''}`}
                 onClick={() => handleSelect(opt)}
+                className="w-full flex items-center gap-4 bg-secondary hover:bg-primary/8 border-2 border-transparent hover:border-primary rounded-xl px-5 py-4 text-left transition-all group"
               >
-                <span className={styles.optionLetter}>{String.fromCharCode(65 + i)}</span>
-                <span>{opt.label}</span>
+                <span className="w-8 h-8 rounded-lg bg-card flex items-center justify-center text-xs font-bold text-foreground flex-shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
+                  {String.fromCharCode(65 + i)}
+                </span>
+                <span className="text-sm text-foreground leading-snug">{opt.label}</span>
               </button>
             ))}
           </div>
         </div>
 
-        {/* Dimension indicator */}
-        <div className={styles.dimensions}>
-          {['Physical Constitution', 'Digestion & Appetite', 'Sleep & Energy', 'Mental & Emotional', 'Voice Characteristics', 'Practice Patterns', 'Singer Profile'].map((d, i) => {
-            const qs = QUESTIONS.filter(q => q.dimension === d)
-            const answered = qs.filter(q => answers[q.id]).length
+        {/* Dimension pills */}
+        <div className="flex flex-wrap gap-2 mt-6">
+          {['Physical', 'Digestion', 'Sleep', 'Mental', 'Voice', 'Practice', 'Profile'].map((d, i) => {
+            const done = current > [1, 2, 3, 4, 6, 8, 9][i]
             return (
-              <div key={d} className={`${styles.dim} ${answered === qs.length ? styles.dimDone : ''}`}>
+              <span
+                key={d}
+                className={`text-xs px-3 py-1 rounded-full transition-colors ${
+                  done ? 'bg-accent/15 text-accent' : 'bg-muted text-muted-foreground'
+                }`}
+              >
                 {d}
-              </div>
+              </span>
             )
           })}
         </div>
