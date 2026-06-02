@@ -22,10 +22,11 @@ export default function Landing({ user, hasPlan }) {
           <span className={styles.logoText}>Swarataa</span>
         </div>
         <div className={styles.navRight}>
-          {/* Language switcher */}
+          {/* Plan language switcher */}
           <div className={styles.langSwitcher}>
+            <span className={styles.langSwitcherLabel}>Plan:</span>
             {['en', 'hi', 'mr'].map(code => (
-              <button key={code} className={`${styles.langBtn} ${lang === code ? styles.langBtnActive : ''}`} onClick={() => changeLang(code)}>
+              <button key={code} className={`${styles.langBtn} ${lang === code ? styles.langBtnActive : ''}`} onClick={() => changeLang(code)} title={`Generate your vocal plan in ${code === 'en' ? 'English' : code === 'hi' ? 'Hindi' : 'Marathi'}`}>
                 {code === 'en' ? 'EN' : code === 'hi' ? 'हिं' : 'म'}
               </button>
             ))}

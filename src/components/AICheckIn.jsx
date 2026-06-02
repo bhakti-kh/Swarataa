@@ -13,11 +13,11 @@ const TIME_OPTIONS = [10, 20, 30]
 
 function getDoshaKaal() {
   const h = new Date().getHours()
-  if (h >= 6 && h < 10) return 'Kapha Kaal (6–10 AM) — ideal for deep alaap'
-  if (h >= 10 && h < 14) return 'Pitta Kaal (10 AM–2 PM) — good for taans and precision'
-  if (h >= 14 && h < 18) return 'Vata Kaal (2–6 PM) — good for improvisation'
-  if (h >= 18 && h < 22) return 'Kapha Kaal (6–10 PM) — ideal for evening ragas'
-  return 'Pitta Kaal (late night) — vocal rest recommended'
+  if (h >= 6 && h < 10) return { label: 'Kapha Kaal', time: '6–10 AM', tip: 'ideal for deep alaap' }
+  if (h >= 10 && h < 14) return { label: 'Pitta Kaal', time: '10 AM–2 PM', tip: 'good for taans and precision' }
+  if (h >= 14 && h < 18) return { label: 'Vata Kaal', time: '2–6 PM', tip: 'good for improvisation' }
+  if (h >= 18 && h < 22) return { label: 'Kapha Kaal', time: '6–10 PM', tip: 'ideal for evening ragas' }
+  return { label: 'Rest period', time: 'late night', tip: 'vocal rest recommended' }
 }
 
 const PHASE_COLORS = {
@@ -26,23 +26,27 @@ const PHASE_COLORS = {
   Alankars: 'rgba(201,150,43,0.1)',
   'Raga Practice': 'var(--light-teal)',
   Cooldown: 'rgba(74,124,106,0.08)',
-  'Chakradhyan': 'rgba(123,94,167,0.1)',
+  Chakradhyan: 'rgba(123,94,167,0.1)',
   default: 'rgba(26,74,74,0.05)',
 }
 
-export default function AICheckIn({ plan }) {
+export default function AICheckIn({ plan, user }) {
   const [vocalState, setVocalState] = useState(null)
   const [timeAvailable, setTimeAvailable] = useState(20)
   const [loading, setLoading] = useState(false)
   const [session, setSession] = useState(null)
   const [error, setError] = useState(null)
-  const [step, setStep] = useState('checkin') // checkin | result
+  const [step, setStep] = useState('checkin')
+
+  const dosha = getDoshaKaal()
+  const firstName = user?.displayName?.split(' ')[0] || 'Singer'
+  const primaryDosha = plan?.prakriti?.primary
+  const bestTime = plan?.riyazPlan?.bestTime
 
   const handleGenerate = async () => {
     if (!vocalState) return
     setLoading(true)
     setError(null)
-
     try {
       const res = await fetch('/api/coaching-checkin', {
         method: 'POST',
@@ -50,14 +54,14 @@ export default function AICheckIn({ plan }) {
         body: JSON.stringify({
           vocalState: VOCAL_STATES.find(s => s.id === vocalState)?.label,
           timeAvailable,
-          doshaKaal: getDoshaKaal(),
+          doshaKaal: `${dosha.label} (${dosha.time}) — ${dosha.tip}`,
           prakriti: plan?.prakriti || null,
+          userName: firstName,
+          bestPracticeTime: bestTime || null,
         }),
       })
-
       if (!res.ok) throw new Error('Could not generate session')
-      const data = await res.json()
-      setSession(data)
+      setSession(await res.json())
       setStep('result')
     } catch (e) {
       setError(e.message)
@@ -71,8 +75,8 @@ export default function AICheckIn({ plan }) {
       <div className={`card ${styles.card}`}>
         <div className={styles.loading}>
           <Loader2 size={28} color="var(--saffron)" className={styles.spinner} />
-          <h3>Preparing your session...</h3>
-          <p>Guru AI is reading your vocal state and crafting today's plan.</p>
+          <h3>Preparing your session, {firstName}...</h3>
+          <p>Guru AI is reading your {primaryDosha ? `${primaryDosha} prakriti and ` : ''}vocal state.</p>
         </div>
       </div>
     )
@@ -85,7 +89,7 @@ export default function AICheckIn({ plan }) {
           <div className={styles.resultHeaderLeft}>
             <div className={styles.guruIcon}><Sparkles size={16} color="var(--saffron)" /></div>
             <div>
-              <p className={styles.guruLabel}>Guru AI · Today's Session</p>
+              <p className={styles.guruLabel}>Guru AI · {dosha.label} · {dosha.time}</p>
               <h3 className={styles.greeting}>{session.greeting}</h3>
             </div>
           </div>
@@ -93,6 +97,15 @@ export default function AICheckIn({ plan }) {
             <RefreshCw size={13} /> New check-in
           </button>
         </div>
+
+        {/* Prakriti context strip */}
+        {primaryDosha && (
+          <div className={styles.contextStrip}>
+            <span className={styles.contextItem}>🌿 {primaryDosha.charAt(0).toUpperCase() + primaryDosha.slice(1)} prakriti</span>
+            {bestTime && <span className={styles.contextItem}>⏰ Best time: {bestTime}</span>}
+            <span className={styles.contextItem}>🕐 Now: {dosha.tip}</span>
+          </div>
+        )}
 
         <p className={styles.overallAdvice}>{session.overallAdvice}</p>
 
@@ -140,18 +153,26 @@ export default function AICheckIn({ plan }) {
         <div className={styles.headerIcon}><Sparkles size={16} color="var(--saffron)" /></div>
         <div>
           <h3 className={styles.title}>Guru AI Check-In</h3>
-          <p className={styles.subtitle}>Get your personalized session for today</p>
+          <p className={styles.subtitle}>
+            {primaryDosha
+              ? `Personalised for your ${primaryDosha} prakriti · ${dosha.label}`
+              : `Your session for ${dosha.label} · ${dosha.time}`}
+          </p>
         </div>
       </div>
 
-      <p className={styles.question}>How is your voice today?</p>
+      {/* Context from plan */}
+      {plan && (
+        <div className={styles.planContext}>
+          {bestTime && <span>⏰ Your best time: <strong>{bestTime}</strong></span>}
+          <span>🕐 Right now: <strong>{dosha.tip}</strong></span>
+        </div>
+      )}
+
+      <p className={styles.question}>How is your voice today, {firstName}?</p>
       <div className={styles.states}>
         {VOCAL_STATES.map(s => (
-          <button
-            key={s.id}
-            className={`${styles.stateBtn} ${vocalState === s.id ? styles.stateBtnActive : ''}`}
-            onClick={() => setVocalState(s.id)}
-          >
+          <button key={s.id} className={`${styles.stateBtn} ${vocalState === s.id ? styles.stateBtnActive : ''}`} onClick={() => setVocalState(s.id)}>
             <span className={styles.stateEmoji}>{s.emoji}</span>
             <div className={styles.stateText}>
               <span className={styles.stateLabel}>{s.label}</span>
@@ -165,11 +186,7 @@ export default function AICheckIn({ plan }) {
       <p className={styles.question} style={{ marginTop: 20 }}>How much time do you have?</p>
       <div className={styles.timeOptions}>
         {TIME_OPTIONS.map(t => (
-          <button
-            key={t}
-            className={`${styles.timeBtn} ${timeAvailable === t ? styles.timeBtnActive : ''}`}
-            onClick={() => setTimeAvailable(t)}
-          >
+          <button key={t} className={`${styles.timeBtn} ${timeAvailable === t ? styles.timeBtnActive : ''}`} onClick={() => setTimeAvailable(t)}>
             {t} min
           </button>
         ))}
@@ -177,18 +194,10 @@ export default function AICheckIn({ plan }) {
 
       {error && <p className={styles.error}>{error}</p>}
 
-      <button
-        className="btn-primary"
-        onClick={handleGenerate}
-        disabled={!vocalState}
-        style={{ width: '100%', marginTop: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}
-      >
+      <button className="btn-primary" onClick={handleGenerate} disabled={!vocalState}
+        style={{ width: '100%', marginTop: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
         Generate My Session <ChevronRight size={16} />
       </button>
-
-      <p className={styles.hint}>
-        <Mic size={11} /> {getDoshaKaal()}
-      </p>
     </div>
   )
 }

@@ -1,0 +1,31 @@
+.page { display: flex; flex-direction: column; gap: 20px; max-width: 640px; }
+.header h1 { font-family: 'Playfair Display', serif; font-size: 26px; color: var(--text-dark); }
+.header p { font-size: 13px; color: var(--text-light); margin-top: 4px; }
+
+.identity { display: flex; align-items: center; gap: 20px; }
+.avatarWrap {}
+.avatar { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 3px solid var(--light-teal); }
+.avatarFallback { width: 72px; height: 72px; border-radius: 50%; background: var(--light-teal); color: var(--deep-teal); font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.name { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--text-dark); margin-bottom: 4px; }
+.email { font-size: 13px; color: var(--text-mid); }
+.since { font-size: 11px; color: var(--text-light); margin-top: 4px; }
+
+.sectionHeader { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.sectionHeader h3 { font-family: 'Playfair Display', serif; font-size: 17px; color: var(--text-dark); }
+.comingSoon { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; background: rgba(232,135,58,0.1); color: var(--saffron); padding: 4px 10px; border-radius: 50px; }
+
+.fields { display: flex; flex-direction: column; gap: 2px; }
+.field { display: flex; align-items: center; gap: 14px; padding: 12px 8px; border-bottom: 1px solid rgba(26,74,74,0.06); opacity: 0.55; }
+.field:last-child { border-bottom: none; }
+.fieldIcon { width: 32px; height: 32px; border-radius: 8px; background: rgba(26,74,74,0.05); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.fieldBody { flex: 1; }
+.fieldLabel { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text-light); margin-bottom: 3px; }
+.fieldInput { font-size: 13px; color: var(--text-light); font-style: italic; }
+
+.settingsList { display: flex; flex-direction: column; gap: 2px; }
+.settingItem { display: flex; align-items: center; gap: 14px; padding: 14px 8px; border-bottom: 1px solid rgba(26,74,74,0.06); opacity: 0.5; cursor: default; }
+.settingItem:last-child { border-bottom: none; }
+.settingIcon { width: 34px; height: 34px; border-radius: 9px; background: rgba(26,74,74,0.05); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.settingLabel { font-size: 14px; font-weight: 500; color: var(--text-dark); margin-bottom: 2px; }
+.settingDesc { font-size: 11px; color: var(--text-light); }
+.settingArrow { font-size: 20px; color: var(--text-light); margin-left: auto; }

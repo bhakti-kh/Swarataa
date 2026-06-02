@@ -14,6 +14,7 @@
 .catLabel { font-size: 14px; font-weight: 600; color: var(--text-dark); margin-bottom: 4px; }
 .catCount { font-size: 12px; font-weight: 500; }
 
+.swarSamayTab { display: flex; flex-direction: column; gap: 16px; }
 .sectionTitle { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--text-dark); margin-bottom: 12px; }
 .resourceList { display: flex; flex-direction: column; gap: 8px; }
 .resource { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px !important; transition: transform 0.1s; }

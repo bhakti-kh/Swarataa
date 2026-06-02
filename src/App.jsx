@@ -15,6 +15,7 @@ import Library from './pages/Library'
 import Community from './pages/Community'
 import StartRiyaz from './pages/StartRiyaz'
 import GuidedSession from './pages/GuidedSession'
+import AppProfile from './pages/AppProfile'
 import './index.css'
 
 const PLAN_KEY = 'swarataa_plan'
@@ -79,6 +80,7 @@ export default function App() {
           <Route path="progress" element={<Progress />} />
           <Route path="library" element={<Library />} />
           <Route path="community" element={<Community />} />
+          <Route path="profile" element={<AppProfile user={user} />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" />} />

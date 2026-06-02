@@ -1,18 +1,19 @@
 import { useState } from 'react'
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'
 import { signOutUser } from '../utils/firebase'
-import { LayoutDashboard, FileText, Leaf, TrendingUp, BookOpen, Users, Menu, X, Mic, LogOut, Sparkles, PlayCircle } from 'lucide-react'
+import { LayoutDashboard, FileText, Leaf, TrendingUp, BookOpen, Users, Menu, X, Mic, LogOut, Sparkles, PlayCircle, User, MessageSquare } from 'lucide-react'
 import { useLanguage } from '../context/LanguageContext'
 import styles from './AppLayout.module.css'
 
-const getNavItems = (t) => [
-  { to: '/app/dashboard', icon: LayoutDashboard, label: t.dashboard },
-  { to: '/app/start', icon: PlayCircle, label: t.startRiyaz, highlight: true },
-  { to: '/app/plan', icon: FileText, label: t.myPlan },
-  { to: '/app/herbs', icon: Leaf, label: t.swarSuraksha },
-  { to: '/app/progress', icon: TrendingUp, label: t.progress },
-  { to: '/app/library', icon: BookOpen, label: t.library },
-  { to: '/app/community', icon: Users, label: t.community },
+const NAV_ITEMS = [
+  { to: '/app/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+  { to: '/app/start', icon: PlayCircle, label: 'Start Riyaz', highlight: true },
+  { to: '/app/plan', icon: FileText, label: 'My Vocal Plan' },
+  { to: '/app/herbs', icon: Leaf, label: 'SwarSuraksha' },
+  { to: '/app/progress', icon: TrendingUp, label: 'Progress' },
+  { to: '/app/library', icon: BookOpen, label: 'Library' },
+  { to: '/app/community', icon: Users, label: 'Community' },
+  { to: '/app/profile', icon: User, label: 'Profile' },
 ]
 
 export default function AppLayout({ user, hasPlan }) {
@@ -45,41 +46,52 @@ export default function AppLayout({ user, hasPlan }) {
 
         {/* Nav */}
         <nav className={styles.nav}>
-          {getNavItems(t).map(item => {
-            // Lock My Vocal Plan if no plan yet
+          {NAV_ITEMS.map(item => {
             const locked = item.to === '/app/plan' && !hasPlan
+            if (item.comingSoon) {
+              return (
+                <div key={item.to} className={`${styles.navItem} ${styles.navItemComingSoon}`} title="Coming soon">
+                  <item.icon size={17} />
+                  <span>{item.label}</span>
+                  <span className={styles.comingSoonBadge}>Soon</span>
+                </div>
+              )
+            }
             return (
               <NavLink
                 key={item.to}
-                to={locked ? '/quiz' : item.to}
+                to={locked ? '/onboarding' : item.to}
                 onClick={() => setOpen(false)}
                 className={({ isActive }) =>
                   `${styles.navItem} ${isActive && !locked ? styles.navItemActive : ''} ${locked ? styles.navItemLocked : ''} ${item.highlight && !locked ? styles.navItemHighlight : ''}`
                 }
-                title={locked ? 'Complete the Prakriti quiz to unlock' : item.label}
+                title={locked ? 'Complete the assessment to unlock' : item.label}
               >
                 <item.icon size={17} />
                 <span>{item.label}</span>
-                {locked && <span className={styles.lockBadge}>Quiz first</span>}
+                {locked && <span className={styles.lockBadge}>Assess first</span>}
               </NavLink>
             )
           })}
         </nav>
 
-        {/* Language switcher */}
+        {/* Plan language */}
         <div className={styles.langWrap}>
-          {['en', 'hi', 'mr'].map(code => (
-            <button key={code} className={`${styles.langBtn} ${lang === code ? styles.langBtnActive : ''}`} onClick={() => changeLang(code)}>
-              {code === 'en' ? 'EN' : code === 'hi' ? 'हिं' : 'म'}
-            </button>
-          ))}
+          <span className={styles.langLabel}>Plan language</span>
+          <div className={styles.langBtns}>
+            {['en', 'hi', 'mr'].map(code => (
+              <button key={code} className={`${styles.langBtn} ${lang === code ? styles.langBtnActive : ''}`} onClick={() => changeLang(code)} title={`Generate plan in ${code === 'en' ? 'English' : code === 'hi' ? 'Hindi' : 'Marathi'}`}>
+                {code === 'en' ? 'EN' : code === 'hi' ? 'हिं' : 'म'}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Retake quiz */}
+        {/* Retake assessment */}
         {hasPlan && (
           <div className={styles.retakeWrap}>
-            <button className={styles.retakeBtn} onClick={() => { setOpen(false); navigate('/quiz') }}>
-              <Sparkles size={14} /> Retake Prakriti Quiz
+            <button className={styles.retakeBtn} onClick={() => { setOpen(false); navigate('/onboarding') }}>
+              <Sparkles size={14} /> Retake Assessment
             </button>
           </div>
         )}
@@ -104,6 +116,12 @@ export default function AppLayout({ user, hasPlan }) {
       <main className={styles.main}>
         <Outlet />
       </main>
+
+      {/* Chatbot FAB — Coming Soon */}
+      <div className={styles.chatFab} title="AI Vocal Coach — Coming Soon">
+        <MessageSquare size={18} color="white" />
+        <span className={styles.chatFabBadge}>Soon</span>
+      </div>
     </div>
   )
 }

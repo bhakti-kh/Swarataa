@@ -34,23 +34,13 @@ export default function Dashboard({ user, plan }) {
         <div>
           <h1 className={styles.greeting}>{greeting}, {firstName} 🙏</h1>
           <p className={styles.greetingSub}>
-            {plan ? `Your ${plan.prakriti?.primary} prakriti plan is ready` : 'Take the Prakriti quiz to get your personalized plan'}
+            {plan ? `${plan.prakriti?.primary?.charAt(0).toUpperCase() + plan.prakriti?.primary?.slice(1)} prakriti · ${plan.riyazPlan?.bestTime || 'Best time: morning'}` : 'Complete your assessment to get your personalized vocal plan'}
           </p>
-        </div>
-        <div className={styles.headerActions}>
-          {!plan && (
-            <button className="btn-secondary" onClick={() => navigate('/quiz')}>
-              <Sparkles size={14} /> Take Prakriti Quiz
-            </button>
-          )}
-          <button className="btn-primary">
-            <Play size={14} /> Start Riyaz
-          </button>
         </div>
       </div>
 
       {/* AI Check-In */}
-      <AICheckIn plan={plan} />
+      <AICheckIn plan={plan} user={user} />
 
       {/* Stats */}
       <div className={styles.statsGrid}>
@@ -144,9 +134,8 @@ export default function Dashboard({ user, plan }) {
             <h3 className={styles.planBannerTitle}>
               {plan.prakriti?.primary?.charAt(0).toUpperCase() + plan.prakriti?.primary?.slice(1)} Constitution
             </h3>
-            <p className={styles.planBannerSub}>{plan.prakriti?.summary?.slice(0, 100)}...</p>
+            <p className={styles.planBannerSub}>{plan.prakriti?.summary?.slice(0, 120)}...</p>
           </div>
-          <button className="btn-primary" onClick={() => navigate('/results')}>View Full Plan →</button>
         </div>
       )}
 

@@ -232,6 +232,7 @@ export default function Onboarding({ setAiPlan, lang }) {
   const [answers, setAnswers] = useState({})
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [voiceSampleShown, setVoiceSampleShown] = useState(false)
 
   const q = QUESTIONS[current]
   const currentSection = q.section
@@ -247,36 +248,80 @@ export default function Onboarding({ setAiPlan, lang }) {
 
     if (current < QUESTIONS.length - 1) {
       setCurrent(current + 1)
-    } else {
-      // All done — generate plan
-      setLoading(true)
-      setError(null)
-      try {
-        const prakritiAnswers = {}
-        QUESTIONS.filter(q => q.section === 2).forEach(q => {
-          if (newAnswers[q.id]) prakritiAnswers[q.id] = newAnswers[q.id]
-        })
-
-        const singerProfile = {
-          gender: newAnswers.gender?.label,
-          ageGroup: newAnswers.ageGroup?.label,
-          role: newAnswers.role?.label,
-          dailyUsage: newAnswers.dailyUsage?.label,
-          singLanguage: newAnswers.singLanguage?.label,
-          saptak: newAnswers.saptak?.label,
-          texture: newAnswers.texture?.label,
-          riyazHabit: newAnswers.riyazHabit?.label,
-          challenge: newAnswers.challenge?.label,
-        }
-
-        const plan = await generatePlan(prakritiAnswers, QUESTIONS.filter(q => q.section === 2), singerProfile, lang)
-        setAiPlan(plan)
-        navigate('/app/plan')
-      } catch (e) {
-        setError(`${e.message}`)
-        setLoading(false)
-      }
+    } else if (!voiceSampleShown) {
+      // Show voice sample step before generating
+      setVoiceSampleShown(true)
     }
+  }
+
+  const handleFinalGenerate = async (allAnswers) => {
+    setLoading(true)
+    setError(null)
+    try {
+      const prakritiAnswers = {}
+      QUESTIONS.filter(q => q.section === 2).forEach(q => {
+        if (allAnswers[q.id]) prakritiAnswers[q.id] = allAnswers[q.id]
+      })
+      const singerProfile = {
+        gender: allAnswers.gender?.label,
+        ageGroup: allAnswers.ageGroup?.label,
+        role: allAnswers.role?.label,
+        dailyUsage: allAnswers.dailyUsage?.label,
+        singLanguage: allAnswers.singLanguage?.label,
+        saptak: allAnswers.saptak?.label,
+        texture: allAnswers.texture?.label,
+        riyazHabit: allAnswers.riyazHabit?.label,
+        challenge: allAnswers.challenge?.label,
+      }
+      const plan = await generatePlan(prakritiAnswers, QUESTIONS.filter(q => q.section === 2), singerProfile, lang)
+      setAiPlan(plan)
+      navigate('/app/plan')
+    } catch (e) {
+      setError(`${e.message}`)
+      setLoading(false)
+    }
+  }
+
+  // Voice sample screen
+  if (voiceSampleShown && !loading) {
+    return (
+      <div className={styles.page}>
+        <div className={styles.container}>
+          <div className={styles.header}>
+            <div className={styles.logo}>
+              <span className={styles.logoMark}>स्व</span>
+              <span className={styles.logoText}>Swarataa</span>
+            </div>
+            <div className={styles.sectionBadge} style={{ color: 'var(--soft-green)', borderColor: 'rgba(74,124,106,0.3)', background: 'rgba(74,124,106,0.08)' }}>
+              🎤 Voice Sample
+            </div>
+          </div>
+          <div className={styles.progressBar}><div className={styles.progressFill} style={{ width: '98%' }} /></div>
+
+          <div className={styles.card}>
+            <p className={styles.hint}>Optional — Skip to continue</p>
+            <h2 className={styles.question}>Submit a voice sample for AI vocal analysis</h2>
+            <p style={{ fontSize: 13, color: 'var(--text-mid)', marginBottom: 24, lineHeight: 1.6 }}>
+              Singing a few phrases of Sa allows our AI to analyze your pitch range, vocal type, and Prakriti alignment — making your plan even more accurate.
+            </p>
+
+            <div style={{ background: 'rgba(26,74,74,0.04)', border: '2px dashed rgba(26,74,74,0.15)', borderRadius: 14, padding: 32, textAlign: 'center', marginBottom: 20 }}>
+              <div style={{ fontSize: 40, marginBottom: 12 }}>🎙️</div>
+              <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-dark)', marginBottom: 6 }}>Voice Analysis</p>
+              <span style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', background: 'rgba(232,135,58,0.1)', color: 'var(--saffron)', padding: '4px 12px', borderRadius: 50, display: 'inline-block' }}>Coming Soon</span>
+              <p style={{ fontSize: 12, color: 'var(--text-light)', marginTop: 10, lineHeight: 1.5 }}>
+                Record or upload a voice sample · AI detects pitch, saptak, breath quality · Refines your vocal plan
+              </p>
+            </div>
+          </div>
+
+          <button className="btn-primary" onClick={() => handleFinalGenerate(answers)} style={{ width: '100%' }}>
+            Continue — Generate My Plan →
+          </button>
+          <p className={styles.progress}>Almost done · Generating your personalized vocal plan</p>
+        </div>
+      </div>
+    )
   }
 
   if (loading) {

@@ -1,82 +1,182 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Leaf, Droplets, Pill, Ear, Star, Info, CheckCircle, Sparkles } from 'lucide-react'
+import { Leaf, Droplets, Pill, Ear, Star, CheckCircle, ShoppingBag, RefreshCw, Package } from 'lucide-react'
 import styles from './HerbSupport.module.css'
 
-const products = [
-  { name: 'Morning Gargle Mix', desc: 'Herbal throat cleansing formula for morning vocal preparation', usage: 'Mix 1 tsp with warm water, gargle for 2 minutes', icon: Droplets, color: 'var(--soft-green)', rating: 4.8, benefits: ['Clears throat mucus', 'Soothes vocal cords', 'Reduces inflammation'] },
-  { name: 'Dosha Balancer', desc: 'Personalized Ayurvedic blend based on your Prakriti', usage: 'Take 2 tablets after meals with warm water', icon: Leaf, color: 'var(--saffron)', rating: 4.9, benefits: ['Balances doshas', 'Supports voice clarity', 'Boosts immunity'] },
-  { name: 'Vocal Support Dots', desc: 'Chewable herbal lozenges for instant vocal relief', usage: 'Chew 1 dot before practice or performance', icon: Pill, color: 'var(--gold)', rating: 4.7, benefits: ['Instant soothing', 'Reduces vocal strain', 'Natural ingredients'] },
-  { name: 'Ear Training Drops', desc: 'Ayurvedic ear oil for enhanced auditory sensitivity', usage: '2 drops in each ear before sleep', icon: Ear, color: 'var(--deep-teal)', rating: 4.6, benefits: ['Improves hearing clarity', 'Reduces ear fatigue', 'Traditional formula'] },
+const DEFAULT_HERBS = [
+  {
+    name: 'Morning Gargle Mix',
+    sanskrit: 'Prabhata Gandoosha',
+    desc: 'Herbal throat cleansing formula for morning vocal preparation',
+    usage: 'Mix 1 tsp with warm water, gargle for 2 minutes before riyaz',
+    icon: Droplets,
+    color: 'var(--soft-green)',
+    rating: 4.8,
+    price: '₹320',
+    period: '30-day supply',
+    benefits: ['Clears throat mucus', 'Soothes vocal cords', 'Reduces inflammation'],
+  },
+  {
+    name: 'Dosha Balancer',
+    sanskrit: 'Prakriti Samvardhan',
+    desc: 'Personalized Ayurvedic blend matched to your vocal prakriti',
+    usage: 'Take 2 tablets after meals with warm water',
+    icon: Leaf,
+    color: 'var(--saffron)',
+    rating: 4.9,
+    price: '₹480',
+    period: '30-day supply',
+    benefits: ['Balances your dosha', 'Supports voice clarity', 'Builds immunity'],
+  },
+  {
+    name: 'Vocal Support Dots',
+    sanskrit: 'Swar Raksha Gutika',
+    desc: 'Chewable herbal lozenges for instant vocal relief',
+    usage: 'Chew 1 dot before practice or performance',
+    icon: Pill,
+    color: 'var(--gold)',
+    rating: 4.7,
+    price: '₹240',
+    period: '60 dots / pack',
+    benefits: ['Instant soothing', 'Reduces vocal strain', 'Natural ingredients'],
+  },
+  {
+    name: 'Ear Training Drops',
+    sanskrit: 'Shravana Taila',
+    desc: 'Ayurvedic ear oil for enhanced auditory sensitivity',
+    usage: '2 drops in each ear before sleep',
+    icon: Ear,
+    color: 'var(--deep-teal)',
+    rating: 4.6,
+    price: '₹380',
+    period: '3-month supply',
+    benefits: ['Improves hearing clarity', 'Reduces ear fatigue', 'Traditional formula'],
+  },
 ]
 
 export default function HerbSupport({ plan }) {
-  const navigate = useNavigate()
-  const [tab, setTab] = useState('products')
+  const [subscribed, setSubscribed] = useState({})
+
+  const aiHerbs = plan?.swarSuraksha
+
+  const toggleSubscribe = (name) => {
+    setSubscribed(prev => ({ ...prev, [name]: !prev[name] }))
+  }
 
   return (
     <div className={styles.page}>
       <div className={styles.header}>
-        <h1>SwarSuraksha</h1>
-        <p>Herbal support for vocal wellness</p>
+        <div>
+          <h1>SwarSuraksha</h1>
+          <p>Your personalized Ayurvedic herb support · Delivered monthly</p>
+        </div>
+        <div className={styles.headerBadge}>
+          <Package size={14} color="var(--soft-green)" />
+          <span>Monthly Kit</span>
+        </div>
       </div>
 
-      <div className={styles.banner}>
-        <p className={styles.bannerLabel}>Ayurvedic Voice Care</p>
-        <h2 className={styles.bannerTitle}>Personalized Herbal Kit</h2>
-        <p className={styles.bannerSub}>Traditional formulations designed specifically for classical singers</p>
-      </div>
-
-      {plan?.swarSuraksha && (
+      {/* Personalized AI kit */}
+      {aiHerbs ? (
         <div className={styles.aiKit}>
-          <p className={styles.aiKitLabel}>Your AI-Generated Kit</p>
-          <h2 className={styles.aiKitName}>{plan.swarSuraksha.kitName}</h2>
+          <div className={styles.aiKitHeader}>
+            <div>
+              <p className={styles.aiKitLabel}>Your Personalized Kit · {plan.prakriti?.primary?.charAt(0).toUpperCase() + plan.prakriti?.primary?.slice(1)} Prakriti</p>
+              <h2 className={styles.aiKitName}>{aiHerbs.kitName}</h2>
+            </div>
+            <div className={styles.aiKitBadge}>AI Curated</div>
+          </div>
+
           <div className={styles.aiHerbs}>
-            {plan.swarSuraksha.herbs.map((h, i) => (
+            {aiHerbs.herbs.map((h, i) => (
               <div key={i} className={styles.aiHerb}>
-                <p className={styles.aiHerbName}>{h.name}</p>
-                <p className={styles.aiHerbForm}>{h.form}</p>
+                <div className={styles.aiHerbTop}>
+                  <div>
+                    <p className={styles.aiHerbName}>{h.name}</p>
+                    <p className={styles.aiHerbForm}>{h.form}</p>
+                  </div>
+                  <button
+                    className={`${styles.subscribeSmall} ${subscribed[h.name] ? styles.subscribedSmall : ''}`}
+                    onClick={() => toggleSubscribe(h.name)}
+                  >
+                    {subscribed[h.name] ? <><CheckCircle size={11} /> Added</> : '+ Add'}
+                  </button>
+                </div>
                 <p className={styles.aiHerbBenefit}>{h.benefit}</p>
               </div>
             ))}
           </div>
-          <div className={styles.aiGargle}><strong>Morning Gargle:</strong> {plan.swarSuraksha.morningGargle}</div>
+
+          <div className={styles.gargle}>
+            <RefreshCw size={12} color="var(--saffron)" />
+            <span><strong>Morning Gargle:</strong> {aiHerbs.morningGargle}</span>
+          </div>
+
+          <div className={styles.kitCta}>
+            <div>
+              <p className={styles.kitCtaLabel}>Subscribe to your monthly kit</p>
+              <p className={styles.kitCtaDesc}>Automatically refilled every 30 days · Cancel anytime</p>
+            </div>
+            <button className={styles.subscribeKitBtn}>
+              <ShoppingBag size={14} /> Subscribe Monthly
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className={styles.noKit}>
+          <Leaf size={32} color="var(--soft-green)" />
+          <p>Complete your vocal assessment to receive a personalized herb kit matched to your prakriti.</p>
         </div>
       )}
 
-      <div className={styles.tabs}>
-        <button className={`${styles.tab} ${tab === 'products' ? styles.tabActive : ''}`} onClick={() => setTab('products')}>Products</button>
-        <button className={`${styles.tab} ${tab === 'prakriti' ? styles.tabActive : ''}`} onClick={() => setTab('prakriti')}>Prakriti Assessment</button>
-        {!plan?.swarSuraksha && (
-          <button className={styles.tabQuiz} onClick={() => navigate('/quiz')}><Sparkles size={12} /> Get AI Kit</button>
-        )}
-      </div>
-
-      {tab === 'products' ? (
+      {/* General product catalog */}
+      <div>
+        <h2 className={styles.sectionTitle}>SwarSuraksha Product Range</h2>
+        <p className={styles.sectionSub}>All products are sourced from certified Ayurvedic suppliers. Subscribe individually or as a kit.</p>
         <div className={styles.productsGrid}>
-          {products.map(p => (
+          {DEFAULT_HERBS.map(p => (
             <div key={p.name} className={`card ${styles.productCard}`}>
               <div className={styles.productTop}>
-                <div className={styles.productIcon} style={{ background: p.color + '15' }}><p.icon size={22} color={p.color} /></div>
-                <span className={styles.rating}><Star size={11} fill="var(--saffron)" color="var(--saffron)" /> {p.rating}</span>
+                <div className={styles.productIcon} style={{ background: p.color + '15' }}>
+                  <p.icon size={22} color={p.color} />
+                </div>
+                <div className={styles.productRating}>
+                  <Star size={11} fill="var(--gold)" color="var(--gold)" /> {p.rating}
+                </div>
               </div>
+
               <h3 className={styles.productName}>{p.name}</h3>
+              <p className={styles.productSanskrit}>{p.sanskrit}</p>
               <p className={styles.productDesc}>{p.desc}</p>
+
               <div className={styles.benefits}>
-                {p.benefits.map(b => <div key={b} className={styles.benefit}><CheckCircle size={11} color={p.color} /> {b}</div>)}
+                {p.benefits.map(b => (
+                  <div key={b} className={styles.benefit}>
+                    <CheckCircle size={11} color={p.color} /> {b}
+                  </div>
+                ))}
               </div>
-              <div className={styles.usage}><div className={styles.usageLabel}><Info size={11} /> Usage</div><p>{p.usage}</p></div>
-              <button className={styles.viewBtn} style={{ background: p.color }}>View Details</button>
+
+              <div className={styles.usage}>
+                <p className={styles.usageText}>{p.usage}</p>
+              </div>
+
+              <div className={styles.productFooter}>
+                <div>
+                  <span className={styles.price}>{p.price}</span>
+                  <span className={styles.period}> / {p.period}</span>
+                </div>
+                <button
+                  className={`${styles.subscribeBtn} ${subscribed[p.name] ? styles.subscribedBtn : ''}`}
+                  onClick={() => toggleSubscribe(p.name)}
+                  style={!subscribed[p.name] ? { background: p.color } : {}}
+                >
+                  {subscribed[p.name] ? <><CheckCircle size={13} /> Subscribed</> : <><ShoppingBag size={13} /> Subscribe</>}
+                </button>
+              </div>
             </div>
           ))}
         </div>
-      ) : (
-        <div className={`card ${styles.assessCard}`}>
-          <h3>Prakriti Assessment</h3>
-          <p className={styles.assessSub}>Discover your Ayurvedic constitution for personalized herb recommendations</p>
-          <button className="btn-primary" onClick={() => navigate('/quiz')} style={{ marginTop: 24, width: '100%' }}>Take Full Prakriti Quiz</button>
-        </div>
-      )}
+      </div>
     </div>
   )
 }

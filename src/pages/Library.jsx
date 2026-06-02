@@ -79,12 +79,9 @@ export default function Library() {
       </div>
 
       <div className={styles.tabs}>
-        <button className={`${styles.tab} ${tab === 'resources' ? styles.tabActive : ''}`} onClick={() => setTab('resources')}>
-          Resources
-        </button>
-        <button className={`${styles.tab} ${tab === 'riyaz' ? styles.tabActive : ''}`} onClick={() => setTab('riyaz')}>
-          Riyaz Ladder
-        </button>
+        <button className={`${styles.tab} ${tab === 'resources' ? styles.tabActive : ''}`} onClick={() => setTab('resources')}>Resources</button>
+        <button className={`${styles.tab} ${tab === 'riyaz' ? styles.tabActive : ''}`} onClick={() => setTab('riyaz')}>Riyaz Ladder</button>
+        <button className={`${styles.tab} ${tab === 'swarsamay' ? styles.tabActive : ''}`} onClick={() => setTab('swarsamay')}>Swar Samay</button>
       </div>
 
       {tab === 'resources' && (
@@ -121,6 +118,23 @@ export default function Library() {
         </>
       )}
 
+      {tab === 'swarsamay' && (
+        <div className={styles.swarSamayTab}>
+          <p className={styles.riyazNote}>
+            🕐 Each raga in Hindustani classical music has an ideal time of day — aligned with the body's natural rhythms and the three doshas. Your personalized riyaz timing is in <strong>My Vocal Plan</strong>.
+          </p>
+          <div className={styles.swarGrid}>
+            {SWAR_SAMAY.map(s => (
+              <div key={s.time} className={styles.swarCard}>
+                <p className={styles.swarTime}>{s.time}</p>
+                <p className={styles.swarRagas}>{s.ragas}</p>
+                <p className={styles.swarNote2}>{s.note}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {tab === 'riyaz' && (
         <div className={styles.riyazLadder}>
           <p className={styles.riyazNote}>
@@ -154,19 +168,6 @@ export default function Library() {
             ))}
           </div>
 
-          <div className={styles.swarSamay}>
-            <h3>Swar Samay — Raga Time Guide</h3>
-            <p className={styles.swarNote}>Each raga has an ideal time of day aligned with the body's natural rhythms.</p>
-            <div className={styles.swarGrid}>
-              {SWAR_SAMAY.map(s => (
-                <div key={s.time} className={styles.swarCard}>
-                  <p className={styles.swarTime}>{s.time}</p>
-                  <p className={styles.swarRagas}>{s.ragas}</p>
-                  <p className={styles.swarNote2}>{s.note}</p>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       )}
     </div>

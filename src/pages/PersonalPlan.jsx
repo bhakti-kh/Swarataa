@@ -50,7 +50,6 @@ export default function PersonalPlan({ plan }) {
             </div>
           ))}
         </div>
-        <button className={styles.retakeBtn} onClick={() => navigate('/quiz')}>Retake Quiz</button>
       </div>
 
       <div className={styles.content}>
