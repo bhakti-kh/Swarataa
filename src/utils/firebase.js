@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app'
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth'
+import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore'
 
 const firebaseConfig = {
   apiKey: "AIzaSyCoqJDBqfENsIAf3ov-P25lBzS2g8DgsEc",
@@ -12,6 +13,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig)
 export const auth = getAuth(app)
+export const db = getFirestore(app)
 
 const provider = new GoogleAuthProvider()
 
@@ -22,4 +24,28 @@ export async function signInWithGoogle() {
 
 export async function signOutUser() {
   await signOut(auth)
+}
+
+// Save user's prakriti plan to Firestore
+export async function savePlanToFirestore(userId, plan) {
+  try {
+    await setDoc(doc(db, 'users', userId), {
+      plan,
+      updatedAt: new Date().toISOString(),
+    }, { merge: true })
+  } catch (e) {
+    console.error('Firestore save error:', e)
+  }
+}
+
+// Load user's prakriti plan from Firestore
+export async function loadPlanFromFirestore(userId) {
+  try {
+    const snap = await getDoc(doc(db, 'users', userId))
+    if (snap.exists()) return snap.data().plan || null
+    return null
+  } catch (e) {
+    console.error('Firestore load error:', e)
+    return null
+  }
 }

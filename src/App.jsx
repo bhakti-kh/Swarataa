@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { onAuthStateChanged } from 'firebase/auth'
-import { auth } from './utils/firebase'
+import { auth, savePlanToFirestore, loadPlanFromFirestore } from './utils/firebase'
 import Landing from './pages/Landing'
 import Login from './pages/Login'
 import PrakritiQuiz from './pages/PrakritiQuiz'
@@ -20,7 +20,6 @@ export default function App() {
   const [user, setUser] = useState(null)
   const [authLoading, setAuthLoading] = useState(true)
   const [aiPlan, setAiPlan] = useState(() => {
-    // Load persisted plan on startup
     try {
       const saved = localStorage.getItem(PLAN_KEY)
       return saved ? JSON.parse(saved) : null
@@ -28,16 +27,27 @@ export default function App() {
   })
 
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (u) => {
+    const unsub = onAuthStateChanged(auth, async (u) => {
       setUser(u)
+      if (u) {
+        // Load plan from Firestore for this user
+        const firestorePlan = await loadPlanFromFirestore(u.uid)
+        if (firestorePlan) {
+          setAiPlan(firestorePlan)
+          try { localStorage.setItem(PLAN_KEY, JSON.stringify(firestorePlan)) } catch {}
+        }
+      }
       setAuthLoading(false)
     })
     return unsub
   }, [])
 
-  const savePlan = (plan) => {
+  const savePlan = async (plan) => {
     setAiPlan(plan)
+    // Save to localStorage (fast, local)
     try { localStorage.setItem(PLAN_KEY, JSON.stringify(plan)) } catch {}
+    // Save to Firestore (persistent, cross-device)
+    if (user) await savePlanToFirestore(user.uid, plan)
   }
 
   if (authLoading) {
@@ -54,14 +64,12 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public */}
         <Route path="/" element={<Landing user={user} hasPlan={!!aiPlan} />} />
         <Route path="/login" element={<Login hasPlan={!!aiPlan} />} />
         <Route path="/quiz" element={
           user ? <PrakritiQuiz setAiPlan={savePlan} /> : <Navigate to="/login" />
         } />
 
-        {/* App — sidebar */}
         <Route path="/app" element={<AppLayout user={user} hasPlan={!!aiPlan} />}>
           <Route index element={<Navigate to="/app/dashboard" />} />
           <Route path="dashboard" element={<Dashboard user={user} plan={aiPlan} />} />
