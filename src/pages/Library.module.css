@@ -48,11 +48,11 @@
 .swarSamay { background: var(--deep-teal); border-radius: var(--radius); padding: 24px; }
 .swarSamay h3 { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--warm-cream); margin-bottom: 6px; }
 .swarNote { font-size: 12px; color: rgba(253,246,236,0.55); margin-bottom: 16px; }
-.swarGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.swarCard { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 14px; }
-.swarTime { font-family: 'Playfair Display', serif; font-size: 14px; color: var(--saffron); margin-bottom: 4px; }
-.swarRagas { font-size: 12px; color: var(--warm-cream); font-weight: 500; margin-bottom: 4px; }
-.swarNote2 { font-size: 11px; color: rgba(253,246,236,0.5); }
+.swarGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.swarCard { background: var(--white); border: 1px solid rgba(26,74,74,0.1); border-radius: 12px; padding: 18px; box-shadow: var(--shadow); }
+.swarTime { font-family: 'Playfair Display', serif; font-size: 17px; color: var(--saffron); margin-bottom: 6px; font-weight: 600; }
+.swarRagas { font-size: 13px; color: var(--text-dark); font-weight: 500; margin-bottom: 6px; }
+.swarNote2 { font-size: 12px; color: var(--text-light); line-height: 1.5; }
 
 @media (max-width: 900px) {
   .categories { grid-template-columns: 1fr 1fr; }
