@@ -1,6 +1,7 @@
+import { signOutUser } from '../utils/firebase'
 import styles from './Landing.module.css'
 
-export default function Landing({ navigate }) {
+export default function Landing({ navigate, user }) {
   return (
     <div className={styles.page}>
       {/* Nav */}
@@ -9,9 +10,20 @@ export default function Landing({ navigate }) {
           <span className={styles.logoMark}>स्व</span>
           <span className={styles.logoText}>Swarataa</span>
         </div>
-        <button className="btn-secondary" onClick={() => navigate('riyaz')}>
-          Riyaz Framework
-        </button>
+        <div className={styles.navRight}>
+          <button className="btn-secondary" onClick={() => navigate('riyaz')}>
+            Riyaz Framework
+          </button>
+          {user ? (
+            <div className={styles.userArea}>
+              {user.photoURL && <img src={user.photoURL} className={styles.avatar} alt={user.displayName} referrerPolicy="no-referrer" />}
+              <span className={styles.userName}>{user.displayName?.split(' ')[0]}</span>
+              <button className={styles.signOut} onClick={() => signOutUser()}>Sign out</button>
+            </div>
+          ) : (
+            <button className="btn-primary" onClick={() => navigate('login')}>Sign in</button>
+          )}
+        </div>
       </nav>
 
       {/* Hero */}

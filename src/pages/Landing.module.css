@@ -17,6 +17,44 @@
   z-index: 10;
 }
 
+.navRight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.userArea {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--light-teal);
+}
+
+.userName {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+.signOut {
+  background: none;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--text-light);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.signOut:hover { color: var(--text-mid); }
+
 .logo {
   display: flex;
   align-items: center;
