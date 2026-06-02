@@ -1,4 +1,4 @@
-const Anthropic = require('@anthropic-ai/sdk').default
+const Anthropic = require('@anthropic-ai/sdk')
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -11,9 +11,14 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: 'Missing prompt' })
   }
 
-  const client = new Anthropic({ apiKey: process.env.VITE_ANTHROPIC_API_KEY })
+  const apiKey = process.env.VITE_ANTHROPIC_API_KEY
+  if (!apiKey) {
+    return res.status(500).json({ error: 'API key not configured on server' })
+  }
 
   try {
+    const client = new Anthropic.default({ apiKey })
+
     const message = await client.messages.create({
       model: 'claude-opus-4-8',
       max_tokens: 2000,

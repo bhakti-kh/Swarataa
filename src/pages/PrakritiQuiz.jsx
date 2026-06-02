@@ -128,7 +128,7 @@ export default function PrakritiQuiz({ navigate }) {
         const plan = await generatePlan(newAnswers, QUESTIONS)
         navigate('results', { answers: newAnswers, plan })
       } catch (e) {
-        setError('Could not generate your plan. Please check your API key in the .env file.')
+        setError(`Error: ${e.message}`)
         setLoading(false)
       }
     }

@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:swarataa-354s7oh3z-bhakti-khs-projects.vercel.app)"
+    ]
+  }
+}
