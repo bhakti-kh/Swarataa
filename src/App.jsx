@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { onAuthStateChanged } from 'firebase/auth'
 import { auth, savePlanToFirestore, loadPlanFromFirestore } from './utils/firebase'
+import { useLanguage } from './context/LanguageContext'
 import Landing from './pages/Landing'
 import Login from './pages/Login'
-import SingerProfile from './pages/SingerProfile'
-import PrakritiQuiz from './pages/PrakritiQuiz'
+import Onboarding from './pages/Onboarding'
 import AppLayout from './pages/AppLayout'
 import Dashboard from './pages/Dashboard'
 import PersonalPlan from './pages/PersonalPlan'
@@ -18,16 +18,13 @@ import GuidedSession from './pages/GuidedSession'
 import './index.css'
 
 const PLAN_KEY = 'swarataa_plan'
-const PROFILE_KEY = 'swarataa_singer_profile'
 
 export default function App() {
+  const { lang } = useLanguage()
   const [user, setUser] = useState(null)
   const [authLoading, setAuthLoading] = useState(true)
   const [aiPlan, setAiPlan] = useState(() => {
     try { const s = localStorage.getItem(PLAN_KEY); return s ? JSON.parse(s) : null } catch { return null }
-  })
-  const [singerProfile, setSingerProfile] = useState(() => {
-    try { const s = localStorage.getItem(PROFILE_KEY); return s ? JSON.parse(s) : null } catch { return null }
   })
   const [sessionPlan, setSessionPlan] = useState(null)
 
@@ -52,11 +49,6 @@ export default function App() {
     if (user) await savePlanToFirestore(user.uid, plan)
   }
 
-  const handleSetSingerProfile = (profile) => {
-    setSingerProfile(profile)
-    try { localStorage.setItem(PROFILE_KEY, JSON.stringify(profile)) } catch {}
-  }
-
   if (authLoading) {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--warm-cream)' }}>
@@ -74,10 +66,7 @@ export default function App() {
         <Route path="/" element={<Landing user={user} hasPlan={!!aiPlan} />} />
         <Route path="/login" element={<Login hasPlan={!!aiPlan} />} />
         <Route path="/onboarding" element={
-          user ? <SingerProfile setSingerProfile={handleSetSingerProfile} /> : <Navigate to="/login" />
-        } />
-        <Route path="/quiz" element={
-          user ? <PrakritiQuiz setAiPlan={savePlan} singerProfile={singerProfile} /> : <Navigate to="/login" />
+          user ? <Onboarding setAiPlan={savePlan} lang={lang} /> : <Navigate to="/login" />
         } />
 
         <Route path="/app" element={<AppLayout user={user} hasPlan={!!aiPlan} />}>

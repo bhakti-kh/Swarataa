@@ -1,9 +1,11 @@
 import { useNavigate } from 'react-router-dom'
 import { signOutUser } from '../utils/firebase'
+import { useLanguage } from '../context/LanguageContext'
 import styles from './Landing.module.css'
 
 export default function Landing({ user, hasPlan }) {
   const navigate = useNavigate()
+  const { lang, changeLang, t } = useLanguage()
 
   const handleCTA = () => {
     if (user && hasPlan) navigate('/app/dashboard')
@@ -20,6 +22,14 @@ export default function Landing({ user, hasPlan }) {
           <span className={styles.logoText}>Swarataa</span>
         </div>
         <div className={styles.navRight}>
+          {/* Language switcher */}
+          <div className={styles.langSwitcher}>
+            {['en', 'hi', 'mr'].map(code => (
+              <button key={code} className={`${styles.langBtn} ${lang === code ? styles.langBtnActive : ''}`} onClick={() => changeLang(code)}>
+                {code === 'en' ? 'EN' : code === 'hi' ? 'हिं' : 'म'}
+              </button>
+            ))}
+          </div>
           {user ? (
             <div className={styles.userArea}>
               {user.photoURL && <img src={user.photoURL} className={styles.avatar} alt={user.displayName} referrerPolicy="no-referrer" />}
@@ -51,7 +61,7 @@ export default function Landing({ user, hasPlan }) {
           </p>
           <div className={styles.heroCta}>
             <button className="btn-primary" onClick={handleCTA}>
-              {user && hasPlan ? 'Go to Dashboard →' : 'Get Your Vocal Plan →'}
+              {user && hasPlan ? t.goToDashboard : t.getStarted}
             </button>
           </div>
         </div>

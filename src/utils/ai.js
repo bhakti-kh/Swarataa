@@ -1,4 +1,6 @@
-export async function generatePlan(answers, questions, singerProfile = null) {
+const LANG_NAMES = { en: 'English', hi: 'Hindi', mr: 'Marathi' }
+
+export async function generatePlan(answers, questions, singerProfile = null, lang = 'en') {
   // Tally dosha scores
   const scores = { vata: 0, pitta: 0, kapha: 0 }
   const experienceLevel = answers.experience?.dosha || 'intermediate'
@@ -79,7 +81,9 @@ Generate a comprehensive, personalized vocal health plan. Format your response a
   }
 }
 
-Be specific and practical. Reference actual ragas, alankars, and Ayurvedic terms. Make this feel deeply personalized to their specific dosha combination and experience level.`
+Be specific and practical. Reference actual ragas, alankars, and Ayurvedic terms. Make this feel deeply personalized to their specific dosha combination and experience level.
+
+IMPORTANT: Generate all text content (summary, advice, descriptions, recommendations) in ${LANG_NAMES[lang] || 'English'}. Keep JSON keys in English. Only translate the values.`
 
   const res = await fetch('/api/generate-plan', {
     method: 'POST',

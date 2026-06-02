@@ -132,6 +132,33 @@
   white-space: nowrap;
 }
 
+.langWrap {
+  display: flex;
+  gap: 4px;
+  padding: 8px 12px 4px;
+}
+
+.langBtn {
+  flex: 1;
+  padding: 6px 4px;
+  border-radius: 6px;
+  border: none;
+  background: rgba(255,255,255,0.06);
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(253,246,236,0.4);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.langBtn:hover { background: rgba(255,255,255,0.1); color: rgba(253,246,236,0.7); }
+
+.langBtnActive {
+  background: var(--saffron) !important;
+  color: white !important;
+}
+
 .retakeWrap {
   padding: 0 12px 8px;
 }

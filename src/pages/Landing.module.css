@@ -23,6 +23,35 @@
   gap: 12px;
 }
 
+.langSwitcher {
+  display: flex;
+  gap: 2px;
+  background: rgba(26,74,74,0.07);
+  border-radius: 8px;
+  padding: 3px;
+}
+
+.langBtn {
+  background: transparent;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.langBtn:hover { color: var(--text-dark); }
+
+.langBtnActive {
+  background: var(--white) !important;
+  color: var(--deep-teal) !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
 .userArea {
   display: flex;
   align-items: center;
