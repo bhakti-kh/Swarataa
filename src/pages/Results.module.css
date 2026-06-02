@@ -1,0 +1,358 @@
+.page { min-height: 100vh; background: var(--warm-cream); }
+
+.error {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+.header {
+  padding: 48px 48px 56px;
+}
+
+.headerInner {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.back {
+  background: none;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  color: var(--text-mid);
+  cursor: pointer;
+  margin-bottom: 24px;
+  display: block;
+}
+
+.back:hover { color: var(--deep-teal); }
+
+.doshaTag {
+  display: inline-block;
+  color: white;
+  padding: 6px 18px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 16px;
+}
+
+.title {
+  font-size: 42px;
+  color: var(--text-dark);
+  margin-bottom: 12px;
+}
+
+.summary {
+  font-size: 17px;
+  color: var(--text-mid);
+  line-height: 1.7;
+  margin-bottom: 28px;
+  max-width: 640px;
+}
+
+.doshaBars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 400px;
+}
+
+.doshaBar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+.doshaBar > span:first-child { width: 48px; }
+
+.barTrack {
+  flex: 1;
+  height: 8px;
+  background: rgba(0,0,0,0.08);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 1s ease;
+}
+
+.barNum {
+  width: 20px;
+  text-align: right;
+  color: var(--text-light);
+}
+
+/* Content */
+.content {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+.section { margin-bottom: 56px; }
+
+.section h2 {
+  font-size: 30px;
+  color: var(--deep-teal);
+  margin-bottom: 24px;
+}
+
+.twoCol {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.threeCol {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+}
+
+.card {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 28px;
+}
+
+.cardTitle {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  margin-bottom: 16px;
+}
+
+.list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.list li {
+  font-size: 14px;
+  color: var(--text-mid);
+  padding-left: 16px;
+  position: relative;
+  line-height: 1.5;
+}
+
+.list li::before {
+  content: '·';
+  position: absolute;
+  left: 0;
+  color: var(--saffron);
+  font-weight: bold;
+}
+
+.seasonal {
+  margin-top: 16px;
+  padding: 12px;
+  background: var(--light-teal);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--soft-green);
+}
+
+.avoid {
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--text-mid);
+  border-top: 1px solid #eee;
+  padding-top: 12px;
+}
+
+/* Riyaz */
+.riyazMeta {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+
+.metaItem {
+  background: var(--white);
+  border-radius: 10px;
+  padding: 16px 24px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.metaLabel {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-light);
+  font-weight: 600;
+}
+
+.metaValue {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--deep-teal);
+  font-family: 'Playfair Display', serif;
+}
+
+.riyazPhases {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.phase {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.phaseHeader {
+  background: var(--deep-teal);
+  color: var(--warm-cream);
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.phaseItem {
+  padding: 12px 20px;
+  font-size: 14px;
+  color: var(--text-mid);
+  border-bottom: 1px solid #f5f5f5;
+  line-height: 1.5;
+}
+
+.phaseItem:last-child { border-bottom: none; }
+
+.weeklyNote {
+  background: var(--light-teal);
+  border-radius: 10px;
+  padding: 14px 20px;
+  font-size: 14px;
+  color: var(--soft-green);
+}
+
+/* Practices */
+.practice {
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.practice:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+.practiceName {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 2px;
+}
+
+.practiceSanskrit {
+  font-size: 12px;
+  color: var(--text-light);
+  font-style: italic;
+  margin-bottom: 4px;
+}
+
+.practiceDesc {
+  font-size: 13px;
+  color: var(--text-mid);
+  line-height: 1.5;
+}
+
+/* SwarSuraksha */
+.swarSection {
+  background: var(--deep-teal);
+  border-radius: var(--radius);
+  padding: 48px;
+  margin-bottom: 48px;
+}
+
+.swarInner { max-width: 100%; }
+
+.swarSection h2 {
+  font-size: 30px;
+  color: var(--warm-cream);
+  margin-bottom: 8px;
+}
+
+.swarSubtitle {
+  color: rgba(253,246,236,0.7);
+  margin-bottom: 32px;
+  font-size: 16px;
+}
+
+.herbGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.herbCard {
+  background: rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+.herbName {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  color: var(--warm-cream);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.herbForm {
+  font-size: 12px;
+  color: var(--saffron);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.herbBenefit {
+  font-size: 13px;
+  color: rgba(253,246,236,0.7);
+  line-height: 1.5;
+}
+
+.gargle {
+  background: rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 16px 20px;
+  font-size: 14px;
+  color: rgba(253,246,236,0.85);
+  border-left: 3px solid var(--saffron);
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  padding-bottom: 48px;
+}
+
+@media (max-width: 900px) {
+  .twoCol, .threeCol, .riyazPhases, .herbGrid { grid-template-columns: 1fr; }
+  .header { padding: 32px 24px 40px; }
+  .swarSection { padding: 32px 24px; }
+  .title { font-size: 32px; }
+}
