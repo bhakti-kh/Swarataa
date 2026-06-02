@@ -4,6 +4,7 @@ import { onAuthStateChanged } from 'firebase/auth'
 import { auth, savePlanToFirestore, loadPlanFromFirestore } from './utils/firebase'
 import Landing from './pages/Landing'
 import Login from './pages/Login'
+import SingerProfile from './pages/SingerProfile'
 import PrakritiQuiz from './pages/PrakritiQuiz'
 import AppLayout from './pages/AppLayout'
 import Dashboard from './pages/Dashboard'
@@ -12,25 +13,28 @@ import HerbSupport from './pages/HerbSupport'
 import Progress from './pages/Progress'
 import Library from './pages/Library'
 import Community from './pages/Community'
+import StartRiyaz from './pages/StartRiyaz'
+import GuidedSession from './pages/GuidedSession'
 import './index.css'
 
 const PLAN_KEY = 'swarataa_plan'
+const PROFILE_KEY = 'swarataa_singer_profile'
 
 export default function App() {
   const [user, setUser] = useState(null)
   const [authLoading, setAuthLoading] = useState(true)
   const [aiPlan, setAiPlan] = useState(() => {
-    try {
-      const saved = localStorage.getItem(PLAN_KEY)
-      return saved ? JSON.parse(saved) : null
-    } catch { return null }
+    try { const s = localStorage.getItem(PLAN_KEY); return s ? JSON.parse(s) : null } catch { return null }
   })
+  const [singerProfile, setSingerProfile] = useState(() => {
+    try { const s = localStorage.getItem(PROFILE_KEY); return s ? JSON.parse(s) : null } catch { return null }
+  })
+  const [sessionPlan, setSessionPlan] = useState(null)
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (u) => {
       setUser(u)
       if (u) {
-        // Load plan from Firestore for this user
         const firestorePlan = await loadPlanFromFirestore(u.uid)
         if (firestorePlan) {
           setAiPlan(firestorePlan)
@@ -44,10 +48,13 @@ export default function App() {
 
   const savePlan = async (plan) => {
     setAiPlan(plan)
-    // Save to localStorage (fast, local)
     try { localStorage.setItem(PLAN_KEY, JSON.stringify(plan)) } catch {}
-    // Save to Firestore (persistent, cross-device)
     if (user) await savePlanToFirestore(user.uid, plan)
+  }
+
+  const handleSetSingerProfile = (profile) => {
+    setSingerProfile(profile)
+    try { localStorage.setItem(PROFILE_KEY, JSON.stringify(profile)) } catch {}
   }
 
   if (authLoading) {
@@ -66,14 +73,19 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Landing user={user} hasPlan={!!aiPlan} />} />
         <Route path="/login" element={<Login hasPlan={!!aiPlan} />} />
+        <Route path="/onboarding" element={
+          user ? <SingerProfile setSingerProfile={handleSetSingerProfile} /> : <Navigate to="/login" />
+        } />
         <Route path="/quiz" element={
-          user ? <PrakritiQuiz setAiPlan={savePlan} /> : <Navigate to="/login" />
+          user ? <PrakritiQuiz setAiPlan={savePlan} singerProfile={singerProfile} /> : <Navigate to="/login" />
         } />
 
         <Route path="/app" element={<AppLayout user={user} hasPlan={!!aiPlan} />}>
           <Route index element={<Navigate to="/app/dashboard" />} />
           <Route path="dashboard" element={<Dashboard user={user} plan={aiPlan} />} />
           <Route path="plan" element={<PersonalPlan plan={aiPlan} />} />
+          <Route path="start" element={<StartRiyaz plan={aiPlan} setSessionPlan={setSessionPlan} />} />
+          <Route path="session" element={<GuidedSession plan={aiPlan} sessionPlan={sessionPlan} />} />
           <Route path="herbs" element={<HerbSupport plan={aiPlan} />} />
           <Route path="progress" element={<Progress />} />
           <Route path="library" element={<Library />} />

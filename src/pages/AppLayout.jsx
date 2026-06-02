@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'
 import { signOutUser } from '../utils/firebase'
-import { LayoutDashboard, FileText, Leaf, TrendingUp, BookOpen, Users, Menu, X, Mic, LogOut, Sparkles } from 'lucide-react'
+import { LayoutDashboard, FileText, Leaf, TrendingUp, BookOpen, Users, Menu, X, Mic, LogOut, Sparkles, PlayCircle } from 'lucide-react'
 import styles from './AppLayout.module.css'
 
 const navItems = [
   { to: '/app/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+  { to: '/app/start', icon: PlayCircle, label: 'Start Riyaz', highlight: true },
   { to: '/app/plan', icon: FileText, label: 'My Vocal Plan' },
   { to: '/app/herbs', icon: Leaf, label: 'SwarSuraksha' },
   { to: '/app/progress', icon: TrendingUp, label: 'Progress' },
@@ -51,7 +52,7 @@ export default function AppLayout({ user, hasPlan }) {
                 to={locked ? '/quiz' : item.to}
                 onClick={() => setOpen(false)}
                 className={({ isActive }) =>
-                  `${styles.navItem} ${isActive && !locked ? styles.navItemActive : ''} ${locked ? styles.navItemLocked : ''}`
+                  `${styles.navItem} ${isActive && !locked ? styles.navItemActive : ''} ${locked ? styles.navItemLocked : ''} ${item.highlight && !locked ? styles.navItemHighlight : ''}`
                 }
                 title={locked ? 'Complete the Prakriti quiz to unlock' : item.label}
               >

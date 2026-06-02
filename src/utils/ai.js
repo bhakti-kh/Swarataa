@@ -1,4 +1,4 @@
-export async function generatePlan(answers, questions) {
+export async function generatePlan(answers, questions, singerProfile = null) {
   // Tally dosha scores
   const scores = { vata: 0, pitta: 0, kapha: 0 }
   const experienceLevel = answers.experience?.dosha || 'intermediate'
@@ -20,7 +20,13 @@ export async function generatePlan(answers, questions) {
   const prompt = `You are an expert in Ayurveda, Hindustani classical music, and vocal health.
 You are analyzing a singer's prakriti (Ayurvedic constitution) quiz results to generate a personalized vocal health and practice plan.
 
-SINGER'S QUIZ ANSWERS:
+${singerProfile ? `SINGER PROFILE:
+Voice Type: ${singerProfile.voiceType}
+Training Background: ${singerProfile.training}
+Primary Goal: ${singerProfile.goal}
+Biggest Challenge: ${singerProfile.challenge}
+
+` : ''}SINGER'S QUIZ ANSWERS:
 ${answerSummary}
 
 DOSHA SCORES: Vata: ${scores.vata}, Pitta: ${scores.pitta}, Kapha: ${scores.kapha}

@@ -107,6 +107,16 @@
   border-right-color: var(--saffron) !important;
 }
 
+.navItemHighlight {
+  color: var(--saffron) !important;
+  background: rgba(232,135,58,0.08) !important;
+  font-weight: 600 !important;
+}
+
+.navItemHighlight:hover {
+  background: rgba(232,135,58,0.14) !important;
+}
+
 .navItemLocked {
   opacity: 0.45;
   cursor: pointer;

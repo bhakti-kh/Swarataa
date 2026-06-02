@@ -14,7 +14,7 @@ export default function Login({ hasPlan }) {
     try {
       await signInWithGoogle()
       // First-time user → quiz. Returning user with plan → dashboard
-      navigate(hasPlan ? '/app/dashboard' : '/quiz')
+      navigate(hasPlan ? '/app/dashboard' : '/onboarding')
     } catch (e) {
       setError('Sign-in failed. Please try again.')
       setLoading(false)

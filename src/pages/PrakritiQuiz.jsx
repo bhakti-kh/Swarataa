@@ -106,7 +106,7 @@ const QUESTIONS = [
   },
 ]
 
-export default function PrakritiQuiz({ setAiPlan }) {
+export default function PrakritiQuiz({ setAiPlan, singerProfile }) {
   const navigate = useNavigate()
   const [current, setCurrent] = useState(0)
   const [answers, setAnswers] = useState({})
@@ -127,7 +127,7 @@ export default function PrakritiQuiz({ setAiPlan }) {
       setLoading(true)
       setError(null)
       try {
-        const plan = await generatePlan(newAnswers, QUESTIONS)
+        const plan = await generatePlan(newAnswers, QUESTIONS, singerProfile)
         setAiPlan(plan)
         navigate('/app/plan')
       } catch (e) {
@@ -158,7 +158,7 @@ export default function PrakritiQuiz({ setAiPlan }) {
             ← Back
           </button>
           <div className={styles.stepLabel}>
-            Question {current + 1} of {QUESTIONS.length}
+            Step 2 of 2 · Question {current + 1} of {QUESTIONS.length}
           </div>
         </div>
 
