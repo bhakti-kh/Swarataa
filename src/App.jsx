@@ -5,6 +5,7 @@ import { auth } from './utils/firebase'
 import Layout from './pages/Layout'
 import Landing from './pages/Landing'
 import Login from './pages/Login'
+import Welcome from './pages/Welcome'
 import Dashboard from './pages/Dashboard'
 import PrakritiQuiz from './pages/PrakritiQuiz'
 import Results from './pages/Results'
@@ -33,7 +34,7 @@ export default function App() {
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-muted border-t-primary rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-muted-foreground">Loading Swarataa...</p>
+          <p className="text-muted-foreground text-sm">Loading Swarataa...</p>
         </div>
       </div>
     )
@@ -42,11 +43,15 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Public landing — no sidebar */}
         <Route path="/" element={<Landing user={user} />} />
         <Route path="/login" element={<Login />} />
         <Route path="/quiz" element={user ? <PrakritiQuiz setQuizPlan={setQuizPlan} /> : <Navigate to="/login" />} />
         <Route path="/results" element={<Results plan={quizPlan} />} />
+
+        {/* App — with sidebar layout */}
         <Route element={<Layout user={user} />}>
+          <Route path="/welcome" element={<Welcome user={user} />} />
           <Route path="/dashboard" element={<Dashboard user={user} plan={quizPlan} />} />
           <Route path="/riyaz" element={<RiyazFramework />} />
           <Route path="/herbs" element={<HerbSupport plan={quizPlan} />} />

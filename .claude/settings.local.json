@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "WebFetch(domain:swarataa-354s7oh3z-bhakti-khs-projects.vercel.app)"
+      "WebFetch(domain:swarataa-354s7oh3z-bhakti-khs-projects.vercel.app)",
+      "PowerShell(cd \"C:\\\\Users\\\\Bhakti\\\\OneDrive\\\\Desktop\\\\Swarataa\"; git checkout advanced; Write-Host \"On branch: $\\(git branch --show-current\\)\")",
+      "PowerShell(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\Bhakti\\\\OneDrive\\\\Desktop\\\\Swarataa\\\\src\\\\components\")"
     ]
   }
 }

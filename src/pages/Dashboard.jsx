@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom'
 import { Play, Wind, Flame, Heart, Clock, TrendingUp, Sun, Music, Sparkles } from 'lucide-react'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import { DoshaTimeWidget } from '../components/DoshaTimeWidget'
+import { ImageWithFallback } from '../components/ImageWithFallback'
 
 const weeklyData = [
   { day: 'Mon', minutes: 35, score: 72 },
@@ -152,6 +154,28 @@ export default function Dashboard({ user, plan }) {
           </div>
         </div>
       )}
+
+      {/* Dosha Time Widget */}
+      <DoshaTimeWidget plan={plan} />
+
+      {/* Featured Banner */}
+      <div className="relative rounded-2xl overflow-hidden h-48 sm:h-56">
+        <ImageWithFallback
+          src="https://images.unsplash.com/photo-1742483377314-b0faf8f9f86e?w=1080&q=80"
+          alt="Indian classical music"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#2D1810]/80 to-transparent flex items-center">
+          <div className="p-6 sm:p-8 text-white max-w-md">
+            <p className="text-xs uppercase tracking-wider opacity-80 mb-1">Featured Practice</p>
+            <h2 className="text-xl" style={{ fontFamily: "'Playfair Display', serif" }}>Evening Raag Yaman Session</h2>
+            <p className="text-sm opacity-80 mt-2">A guided 30-minute session with pitch visualization and tanpura accompaniment</p>
+            <button className="mt-4 bg-white/20 backdrop-blur-sm text-white px-5 py-2 rounded-xl text-sm flex items-center gap-2 hover:bg-white/30 transition-colors border border-white/20">
+              <Play size={14} fill="white" /> Begin Session
+            </button>
+          </div>
+        </div>
+      </div>
 
       {/* Recommendations */}
       <div>
