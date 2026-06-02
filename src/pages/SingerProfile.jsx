@@ -5,48 +5,48 @@ import styles from './SingerProfile.module.css'
 const QUESTIONS = [
   {
     id: 'voiceType',
-    question: 'What is your voice type?',
-    hint: 'Not sure? Choose the register that feels most natural to sing in.',
+    question: 'Where does your voice feel most at home?',
+    hint: 'This helps us understand your natural saptak (register).',
     options: [
-      { label: 'Soprano', desc: 'High female voice' },
-      { label: 'Mezzo-Soprano', desc: 'Mid-range female voice' },
-      { label: 'Alto / Contralto', desc: 'Lower female voice' },
-      { label: 'Tenor', desc: 'High male voice' },
-      { label: 'Baritone', desc: 'Mid-range male voice' },
-      { label: 'Not sure yet', desc: 'Still discovering' },
+      { label: 'Mandra Saptak', sublabel: 'मन्द्र सप्तक', desc: 'Deep, rich, resonant — lower register' },
+      { label: 'Madhya Saptak', sublabel: 'मध्य सप्तक', desc: 'Balanced, versatile — middle register' },
+      { label: 'Taar Saptak', sublabel: 'तार सप्तक', desc: 'Clear, light, high — upper register' },
+      { label: 'Gambheer Awaaz', sublabel: 'गंभीर आवाज़', desc: 'Heavy, weighty voice quality' },
+      { label: 'Komala Awaaz', sublabel: 'कोमल आवाज़', desc: 'Soft, delicate, gentle quality' },
+      { label: 'Abhi Pata Nahi', sublabel: 'अभी पता नहीं', desc: 'Still discovering my natural range' },
     ],
   },
   {
     id: 'training',
-    question: 'How are you currently learning?',
-    hint: 'This helps us tailor your riyaz format.',
+    question: 'How are you learning Hindustani classical music?',
+    hint: 'Your riyaz format will be tailored to your learning style.',
     options: [
-      { label: 'Just starting out', desc: 'New to classical music' },
-      { label: 'Self-taught', desc: 'Learning on my own' },
-      { label: 'Learning with a guru', desc: 'One-on-one training' },
-      { label: 'Attending music school', desc: 'Formal institutional training' },
+      { label: 'Guru-Shishya Parampara', sublabel: 'गुरु-शिष्य परंपरा', desc: 'Learning directly from a guru' },
+      { label: 'Swayam Abhyas', sublabel: 'स्वयं अभ्यास', desc: 'Self-taught, practicing on my own' },
+      { label: 'Sangeet Vidyalaya', sublabel: 'संगीत विद्यालय', desc: 'Formal music school or academy' },
+      { label: 'Abhi Shuru Kar Raha/Rahi Hoon', sublabel: 'अभी शुरू कर रहा/रही हूँ', desc: 'Just beginning my journey' },
     ],
   },
   {
     id: 'goal',
-    question: 'What is your primary goal?',
-    hint: 'Your plan will be optimised for this.',
+    question: 'What is drawing you to riyaz?',
+    hint: 'Your vocal plan will be optimised for this intention.',
     options: [
-      { label: 'Vocal health & longevity', desc: 'Protect and strengthen my voice' },
-      { label: 'Learn new ragas', desc: 'Expand my repertoire' },
-      { label: 'Performance readiness', desc: 'Prepare for concerts or events' },
-      { label: 'Build a daily practice', desc: 'Create a sustainable riyaz habit' },
+      { label: 'Swar Shuddhi', sublabel: 'स्वर शुद्धि', desc: 'Master pitch purity and accuracy' },
+      { label: 'Raga Vistar', sublabel: 'राग विस्तार', desc: 'Explore and learn new ragas' },
+      { label: 'Swara Swasthya', sublabel: 'स्वर स्वास्थ्य', desc: 'Strengthen and protect my voice' },
+      { label: 'Niyamit Sadhana', sublabel: 'नियमित साधना', desc: 'Build a consistent daily practice' },
     ],
   },
   {
     id: 'challenge',
     question: 'What is your biggest challenge right now?',
-    hint: 'We will address this directly in your plan.',
+    hint: 'We will address this directly in your personalized plan.',
     options: [
-      { label: 'Breath control', desc: 'Running out of breath mid-phrase' },
-      { label: 'Pitch accuracy', desc: 'Staying on swar consistently' },
-      { label: 'Vocal endurance', desc: 'Voice tiring after long practice' },
-      { label: 'Consistency', desc: 'Maintaining a regular practice habit' },
+      { label: 'Saans ka Niyantran', sublabel: 'सांस का नियंत्रण', desc: 'Breath control across long phrases' },
+      { label: 'Swar mein Rehna', sublabel: 'स्वर में रहना', desc: 'Staying in swar — pitch consistency' },
+      { label: 'Awaaz ki Thakaan', sublabel: 'आवाज़ की थकान', desc: 'Voice fatigues during long practice' },
+      { label: 'Niyamit Riyaz', sublabel: 'नियमित रियाज़', desc: 'Maintaining a regular practice habit' },
     ],
   },
 ]
@@ -64,7 +64,7 @@ export default function SingerProfile({ setSingerProfile }) {
     const newAnswers = { ...answers, [q.id]: option.label }
     setAnswers(newAnswers)
     if (current < QUESTIONS.length - 1) {
-      setCurrent(current + 1)
+      setTimeout(() => setCurrent(current + 1), 300)
     }
   }
 
@@ -83,7 +83,9 @@ export default function SingerProfile({ setSingerProfile }) {
             <span className={styles.logoMark}>स्व</span>
             <span className={styles.logoText}>Swarataa</span>
           </div>
-          <div className={styles.step}>Step 1 of 2 — Singer Profile</div>
+          <div className={styles.stepBadge}>
+            Singer Profile · {current + 1} of {QUESTIONS.length}
+          </div>
         </div>
 
         {/* Progress */}
@@ -103,17 +105,20 @@ export default function SingerProfile({ setSingerProfile }) {
                 className={`${styles.option} ${answers[q.id] === opt.label ? styles.optionSelected : ''}`}
                 onClick={() => handleSelect(opt)}
               >
-                <div className={styles.optionText}>
+                <div className={styles.optionLeft}>
                   <span className={styles.optionLabel}>{opt.label}</span>
+                  <span className={styles.optionSublabel}>{opt.sublabel}</span>
                   <span className={styles.optionDesc}>{opt.desc}</span>
                 </div>
-                {answers[q.id] === opt.label && <span className={styles.check}>✓</span>}
+                {answers[q.id] === opt.label && (
+                  <span className={styles.check}>✓</span>
+                )}
               </button>
             ))}
           </div>
         </div>
 
-        {/* Nav dots */}
+        {/* Dot nav */}
         <div className={styles.dots}>
           {QUESTIONS.map((_, i) => (
             <button
@@ -124,14 +129,20 @@ export default function SingerProfile({ setSingerProfile }) {
           ))}
         </div>
 
-        {/* Continue */}
+        {/* CTA */}
         {allDone && (
-          <button className="btn-primary" onClick={handleContinue} style={{ width: '100%', marginTop: 8 }}>
+          <button
+            className="btn-primary"
+            onClick={handleContinue}
+            style={{ width: '100%', marginTop: 4 }}
+          >
             Continue to Prakriti Assessment →
           </button>
         )}
 
-        <p className={styles.subtext}>Next: 10 questions about your body and voice constitution (2 min)</p>
+        <p className={styles.subtext}>
+          Next: 10 questions about your body constitution and vocal nature
+        </p>
       </div>
     </div>
   )

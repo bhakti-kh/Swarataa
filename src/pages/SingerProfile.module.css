@@ -132,15 +132,29 @@
   gap: 2px;
 }
 
+.optionLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  text-align: left;
+}
+
 .optionLabel {
   font-size: 14px;
   font-weight: 600;
   color: var(--text-dark);
 }
 
-.optionDesc {
+.optionSublabel {
   font-size: 12px;
+  color: var(--saffron);
+  font-weight: 500;
+}
+
+.optionDesc {
+  font-size: 11px;
   color: var(--text-light);
+  margin-top: 1px;
 }
 
 .check {
