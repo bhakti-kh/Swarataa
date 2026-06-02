@@ -1,13 +1,4 @@
-import Anthropic from '@anthropic-ai/sdk'
-
 export async function generatePlan(answers, questions) {
-  const apiKey = import.meta.env.VITE_ANTHROPIC_API_KEY
-  if (!apiKey || apiKey === 'your_api_key_here') {
-    throw new Error('API key not configured')
-  }
-
-  const client = new Anthropic({ apiKey, dangerouslyAllowBrowser: true })
-
   // Tally dosha scores
   const scores = { vata: 0, pitta: 0, kapha: 0 }
   const experienceLevel = answers.experience?.dosha || 'intermediate'
@@ -84,14 +75,16 @@ Generate a comprehensive, personalized vocal health plan. Format your response a
 
 Be specific and practical. Reference actual ragas, alankars, and Ayurvedic terms. Make this feel deeply personalized to their specific dosha combination and experience level.`
 
-  const message = await client.messages.create({
-    model: 'claude-opus-4-8',
-    max_tokens: 2000,
-    messages: [{ role: 'user', content: prompt }],
+  const res = await fetch('/api/generate-plan', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt }),
   })
 
-  const text = message.content[0].text
-  const jsonMatch = text.match(/\{[\s\S]*\}/)
-  if (!jsonMatch) throw new Error('Invalid AI response')
-  return JSON.parse(jsonMatch[0])
+  if (!res.ok) {
+    const err = await res.json()
+    throw new Error(err.error || 'API error')
+  }
+
+  return res.json()
 }
