@@ -1,19 +1,24 @@
 import { useState, useEffect } from 'react'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from './utils/firebase'
+import Layout from './pages/Layout'
 import Landing from './pages/Landing'
+import Login from './pages/Login'
+import Dashboard from './pages/Dashboard'
 import PrakritiQuiz from './pages/PrakritiQuiz'
 import Results from './pages/Results'
 import RiyazFramework from './pages/RiyazFramework'
-import Login from './pages/Login'
+import HerbSupport from './pages/HerbSupport'
+import Progress from './pages/Progress'
+import Library from './pages/Library'
+import Community from './pages/Community'
 import './index.css'
 
 export default function App() {
-  const [page, setPage] = useState('landing')
-  const [quizAnswers, setQuizAnswers] = useState(null)
-  const [aiPlan, setAiPlan] = useState(null)
   const [user, setUser] = useState(null)
   const [authLoading, setAuthLoading] = useState(true)
+  const [quizPlan, setQuizPlan] = useState(null)
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (u) => {
@@ -23,38 +28,33 @@ export default function App() {
     return unsub
   }, [])
 
-  const navigate = (to, data = null) => {
-    if (to === 'results' && data) {
-      setQuizAnswers(data.answers)
-      setAiPlan(data.plan)
-    }
-    setPage(to)
-    window.scrollTo(0, 0)
-  }
-
   if (authLoading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--warm-cream)' }}>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ width: 48, height: 48, border: '3px solid #eee', borderTopColor: 'var(--saffron)', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 16px' }} />
-          <p style={{ color: 'var(--text-light)', fontFamily: 'Inter, sans-serif' }}>Loading Swarataa...</p>
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-muted border-t-primary rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-muted-foreground">Loading Swarataa...</p>
         </div>
       </div>
     )
   }
 
-  // Quiz requires sign-in
-  if (page === 'quiz' && !user) {
-    return <Login navigate={navigate} redirectTo="quiz" />
-  }
-
   return (
-    <div>
-      {page === 'landing' && <Landing navigate={navigate} user={user} />}
-      {page === 'quiz' && <PrakritiQuiz navigate={navigate} user={user} />}
-      {page === 'results' && <Results navigate={navigate} answers={quizAnswers} plan={aiPlan} user={user} />}
-      {page === 'riyaz' && <RiyazFramework navigate={navigate} user={user} />}
-      {page === 'login' && <Login navigate={navigate} />}
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Landing user={user} />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/quiz" element={user ? <PrakritiQuiz setQuizPlan={setQuizPlan} /> : <Navigate to="/login" />} />
+        <Route path="/results" element={<Results plan={quizPlan} />} />
+        <Route element={<Layout user={user} />}>
+          <Route path="/dashboard" element={<Dashboard user={user} plan={quizPlan} />} />
+          <Route path="/riyaz" element={<RiyazFramework />} />
+          <Route path="/herbs" element={<HerbSupport plan={quizPlan} />} />
+          <Route path="/progress" element={<Progress />} />
+          <Route path="/library" element={<Library />} />
+          <Route path="/community" element={<Community />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }

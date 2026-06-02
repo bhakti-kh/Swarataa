@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import styles from './RiyazFramework.module.css'
 
 const LEVELS = [
@@ -51,12 +52,13 @@ const SWAR_SAMAY = [
   { time: '10 PM–1 AM', ragas: 'Darbari Kanada, Malkauns', dosha: 'Night ragas', note: 'Late-night ragas — deep, meditative, for advanced singers' },
 ]
 
-export default function RiyazFramework({ navigate }) {
+export default function RiyazFramework() {
+  const navigate = useNavigate()
   return (
     <div className={styles.page}>
       <nav className={styles.nav}>
-        <button className={styles.back} onClick={() => navigate('landing')}>← Back to Home</button>
-        <button className="btn-primary" onClick={() => navigate('quiz')}>Get My Personal Plan →</button>
+        <button className={styles.back} onClick={() => navigate('/')}>← Back to Home</button>
+        <button className="btn-primary" onClick={() => navigate('/quiz')}>Get My Personal Plan →</button>
       </nav>
 
       <div className={styles.hero}>
@@ -126,7 +128,7 @@ export default function RiyazFramework({ navigate }) {
       <section className={styles.cta}>
         <h2>Find Your Personalized Riyaz Time</h2>
         <p>Take the Prakriti quiz to get a riyaz schedule and raga recommendations matched to your constitution.</p>
-        <button className="btn-primary" onClick={() => navigate('quiz')}>
+        <button className="btn-primary" onClick={() => navigate('/quiz')}>
           Discover My Prakriti →
         </button>
       </section>

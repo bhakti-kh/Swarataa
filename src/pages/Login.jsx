@@ -1,17 +1,19 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { signInWithGoogle } from '../utils/firebase'
-import styles from './Login.module.css'
+import { Mic } from 'lucide-react'
 
-export default function Login({ navigate, redirectTo = 'landing' }) {
+export default function Login() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const navigate = useNavigate()
 
   const handleGoogleSignIn = async () => {
     setLoading(true)
     setError(null)
     try {
       await signInWithGoogle()
-      navigate(redirectTo)
+      navigate('/dashboard')
     } catch (e) {
       setError('Sign-in failed. Please try again.')
       setLoading(false)
@@ -19,24 +21,28 @@ export default function Login({ navigate, redirectTo = 'landing' }) {
   }
 
   return (
-    <div className={styles.page}>
-      <div className={styles.card}>
-        <div className={styles.logo}>
-          <span className={styles.logoMark}>स्व</span>
-          <span className={styles.logoText}>Swarataa</span>
+    <div className="min-h-screen flex items-center justify-center bg-background px-4">
+      <div className="bg-card rounded-2xl shadow-lg p-10 w-full max-w-sm text-center border border-border">
+        <div className="flex items-center justify-center gap-3 mb-8">
+          <div className="w-12 h-12 bg-sidebar rounded-xl flex items-center justify-center">
+            <Mic size={22} className="text-white" />
+          </div>
+          <span className="text-2xl text-foreground" style={{ fontFamily: "'Playfair Display', serif" }}>Swarataa</span>
         </div>
 
-        <h2 className={styles.title}>Welcome back</h2>
-        <p className={styles.sub}>Sign in to access your personalized vocal health plan.</p>
+        <h2 className="text-xl mb-2 text-foreground" style={{ fontFamily: "'Playfair Display', serif" }}>Welcome back</h2>
+        <p className="text-sm text-muted-foreground mb-8">Sign in to access your personalized vocal health plan.</p>
 
-        {error && <div className={styles.error}>{error}</div>}
+        {error && (
+          <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-3 text-sm text-yellow-800 mb-4">{error}</div>
+        )}
 
         <button
-          className={styles.googleBtn}
           onClick={handleGoogleSignIn}
           disabled={loading}
+          className="flex items-center justify-center gap-3 w-full border-2 border-border rounded-full py-3.5 text-sm font-medium text-foreground hover:border-muted-foreground transition-colors disabled:opacity-60 mb-4"
         >
-          <svg width="20" height="20" viewBox="0 0 24 24">
+          <svg width="18" height="18" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
             <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
             <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
@@ -45,7 +51,7 @@ export default function Login({ navigate, redirectTo = 'landing' }) {
           {loading ? 'Signing in...' : 'Continue with Google'}
         </button>
 
-        <button className={styles.skip} onClick={() => navigate('landing')}>
+        <button onClick={() => navigate('/')} className="text-sm text-muted-foreground hover:text-foreground underline">
           Back to home
         </button>
       </div>

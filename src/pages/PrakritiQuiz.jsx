@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { generatePlan } from '../utils/ai'
 import styles from './PrakritiQuiz.module.css'
 
@@ -105,11 +106,12 @@ const QUESTIONS = [
   },
 ]
 
-export default function PrakritiQuiz({ navigate }) {
+export default function PrakritiQuiz({ setQuizPlan }) {
   const [current, setCurrent] = useState(0)
   const [answers, setAnswers] = useState({})
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const navigate = useNavigate()
 
   const q = QUESTIONS[current]
   const progress = ((current) / QUESTIONS.length) * 100
@@ -121,12 +123,12 @@ export default function PrakritiQuiz({ navigate }) {
     if (current < QUESTIONS.length - 1) {
       setCurrent(current + 1)
     } else {
-      // Last question — generate AI plan
       setLoading(true)
       setError(null)
       try {
         const plan = await generatePlan(newAnswers, QUESTIONS)
-        navigate('results', { answers: newAnswers, plan })
+        setQuizPlan(plan)
+        navigate('/results')
       } catch (e) {
         setError(`Error: ${e.message}`)
         setLoading(false)
@@ -151,7 +153,7 @@ export default function PrakritiQuiz({ navigate }) {
       <div className={styles.container}>
         {/* Header */}
         <div className={styles.header}>
-          <button className={styles.back} onClick={() => navigate('landing')}>
+          <button className={styles.back} onClick={() => navigate('/')}>
             ← Back
           </button>
           <div className={styles.stepLabel}>

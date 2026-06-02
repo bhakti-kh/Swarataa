@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import styles from './Results.module.css'
 
 const DOSHA_COLORS = {
@@ -6,12 +7,13 @@ const DOSHA_COLORS = {
   kapha: { bg: '#E8F4F1', accent: '#4A7C6A', label: 'Kapha' },
 }
 
-export default function Results({ navigate, plan }) {
+export default function Results({ plan }) {
+  const navigate = useNavigate()
   if (!plan) {
     return (
       <div className={styles.error}>
         <p>No results found. Please take the quiz first.</p>
-        <button className="btn-primary" onClick={() => navigate('quiz')}>Take Quiz</button>
+        <button className="btn-primary" onClick={() => navigate('/quiz')}>Take Quiz</button>
       </div>
     )
   }
@@ -25,7 +27,7 @@ export default function Results({ navigate, plan }) {
       {/* Header */}
       <div className={styles.header} style={{ background: primary.bg }}>
         <div className={styles.headerInner}>
-          <button className={styles.back} onClick={() => navigate('landing')}>← Home</button>
+          <button className={styles.back} onClick={() => navigate('/')}>← Home</button>
           <div className={styles.doshaTag} style={{ background: primary.accent }}>
             {primary.label} Dominant
             {prakriti.secondary !== 'none' && ` · ${DOSHA_COLORS[prakriti.secondary]?.label || ''} Secondary`}
@@ -167,8 +169,8 @@ export default function Results({ navigate, plan }) {
 
         {/* Actions */}
         <div className={styles.actions}>
-          <button className="btn-secondary" onClick={() => navigate('quiz')}>Retake Quiz</button>
-          <button className="btn-primary" onClick={() => navigate('riyaz')}>Explore Riyaz Framework</button>
+          <button className="btn-secondary" onClick={() => navigate('/quiz')}>Retake Quiz</button>
+          <button className="btn-primary" onClick={() => navigate('/dashboard')}>Go to Dashboard</button>
         </div>
       </div>
     </div>
