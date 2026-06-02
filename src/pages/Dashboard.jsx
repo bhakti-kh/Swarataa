@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { Play, Flame, Heart, Clock, TrendingUp, Sun, Music, Wind, Sparkles } from 'lucide-react'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import { DoshaTimeWidget } from '../components/DoshaTimeWidget'
+import AICheckIn from '../components/AICheckIn'
 import styles from './Dashboard.module.css'
 
 const weeklyData = [
@@ -47,6 +48,9 @@ export default function Dashboard({ user, plan }) {
           </button>
         </div>
       </div>
+
+      {/* AI Check-In */}
+      <AICheckIn plan={plan} />
 
       {/* Stats */}
       <div className={styles.statsGrid}>
