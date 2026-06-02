@@ -129,7 +129,7 @@ export default function PrakritiQuiz({ setAiPlan }) {
       try {
         const plan = await generatePlan(newAnswers, QUESTIONS)
         setAiPlan(plan)
-        navigate('/results')
+        navigate('/app/plan')
       } catch (e) {
         setError(`Error: ${e.message}`)
         setLoading(false)

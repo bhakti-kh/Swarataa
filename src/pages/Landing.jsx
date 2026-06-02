@@ -2,8 +2,15 @@ import { useNavigate } from 'react-router-dom'
 import { signOutUser } from '../utils/firebase'
 import styles from './Landing.module.css'
 
-export default function Landing({ user }) {
+export default function Landing({ user, hasPlan }) {
   const navigate = useNavigate()
+
+  const handleCTA = () => {
+    if (user && hasPlan) navigate('/app/dashboard')
+    else if (user) navigate('/quiz')
+    else navigate('/login')
+  }
+
   return (
     <div className={styles.page}>
       {/* Nav */}
@@ -13,17 +20,19 @@ export default function Landing({ user }) {
           <span className={styles.logoText}>Swarataa</span>
         </div>
         <div className={styles.navRight}>
-          <button className="btn-secondary" onClick={() => navigate('/app/riyaz')}>
-            Riyaz Framework
-          </button>
           {user ? (
             <div className={styles.userArea}>
               {user.photoURL && <img src={user.photoURL} className={styles.avatar} alt={user.displayName} referrerPolicy="no-referrer" />}
               <span className={styles.userName}>{user.displayName?.split(' ')[0]}</span>
+              <button className="btn-primary" onClick={() => navigate('/app/dashboard')} style={{ padding: '10px 20px', fontSize: 14 }}>
+                Go to App
+              </button>
               <button className={styles.signOut} onClick={() => signOutUser()}>Sign out</button>
             </div>
           ) : (
-            <button className="btn-primary" onClick={() => navigate('/login')}>Sign in</button>
+            <button className="btn-primary" onClick={() => navigate('/login')} style={{ padding: '10px 24px', fontSize: 14 }}>
+              Sign in
+            </button>
           )}
         </div>
       </nav>
@@ -41,11 +50,8 @@ export default function Landing({ user }) {
             blending Ayurveda, pranayama, and modern voice science into one guided practice.
           </p>
           <div className={styles.heroCta}>
-            <button className="btn-primary" onClick={() => navigate('/quiz')}>
-              Discover Your Prakriti →
-            </button>
-            <button className="btn-secondary" onClick={() => navigate('/app/riyaz')}>
-              Explore Riyaz Framework
+            <button className="btn-primary" onClick={handleCTA}>
+              {user && hasPlan ? 'Go to Dashboard →' : 'Get Your Vocal Plan →'}
             </button>
           </div>
         </div>
@@ -75,17 +81,17 @@ export default function Landing({ user }) {
         </div>
       </section>
 
-      {/* AI CTA */}
+      {/* CTA */}
       <section className={styles.aiCta}>
         <div className={styles.aiCtaInner}>
-          <h2>Start with Your Prakriti</h2>
+          <h2>Your Personalized Vocal Plan</h2>
           <p>
             Answer 10 research-backed questions about your body, voice, and practice.
-            Our AI generates a personalized riyaz plan, Ayurvedic recommendations,
+            Our AI generates a personalized riyaz schedule, Ayurvedic recommendations,
             and your SwarSuraksha herb kit — in under 2 minutes.
           </p>
-          <button className="btn-primary" onClick={() => navigate('/quiz')}>
-            Take the Prakriti Quiz
+          <button className="btn-primary" onClick={handleCTA}>
+            {user && hasPlan ? 'View My Plan' : 'Get Started Free'}
           </button>
           <p className={styles.disclaimer}>
             Based on classical Ayurvedic texts and vocal science research
@@ -99,31 +105,15 @@ export default function Landing({ user }) {
           <span className={styles.logoMark}>स्व</span>
           <span className={styles.logoText}>Swarataa</span>
         </div>
-        <p>MDes Thesis · IIT Hyderabad · Bhakti Khandekar</p>
+        <p>© 2025 Swarataa</p>
       </footer>
     </div>
   )
 }
 
 const FEATURES = [
-  {
-    icon: '🎵',
-    title: 'Personalized Riyaz Plan',
-    desc: 'AI-generated daily practice schedule based on your prakriti, experience level, and Swar Samay timing.',
-  },
-  {
-    icon: '🌿',
-    title: 'SwarSuraksha Herb Kit',
-    desc: 'Curated Ayurvedic herb recommendations matched to your dosha and specific vocal needs.',
-  },
-  {
-    icon: '🧘',
-    title: 'Yoga & Pranayama',
-    desc: 'Targeted breathwork, yogasana, and chakradhyan practices to support your voice and wellbeing.',
-  },
-  {
-    icon: '📊',
-    title: 'Vocal Insights',
-    desc: 'Understand your voice type, seasonal vulnerabilities, and how to protect your vocal health daily.',
-  },
+  { icon: '🎵', title: 'Personalized Vocal Plan', desc: 'AI-generated riyaz schedule based on your prakriti, experience level, and Swar Samay timing.' },
+  { icon: '🌿', title: 'SwarSuraksha Herb Kit', desc: 'Curated Ayurvedic herb recommendations matched to your dosha and vocal needs.' },
+  { icon: '🧘', title: 'Yoga & Pranayama', desc: 'Targeted breathwork, yogasana, and chakradhyan practices to support your voice.' },
+  { icon: '🤖', title: 'Guru AI Check-In', desc: 'Daily AI coaching — tell us how your voice feels, get a personalized session plan instantly.' },
 ]

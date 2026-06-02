@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { signInWithGoogle } from '../utils/firebase'
 import styles from './Login.module.css'
 
-export default function Login() {
+export default function Login({ hasPlan }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const navigate = useNavigate()
@@ -13,7 +13,8 @@ export default function Login() {
     setError(null)
     try {
       await signInWithGoogle()
-      navigate('/quiz')
+      // First-time user → quiz. Returning user with plan → dashboard
+      navigate(hasPlan ? '/app/dashboard' : '/quiz')
     } catch (e) {
       setError('Sign-in failed. Please try again.')
       setLoading(false)
@@ -29,7 +30,11 @@ export default function Login() {
         </div>
 
         <h2 className={styles.title}>Welcome back</h2>
-        <p className={styles.sub}>Sign in to access your personalized vocal health plan.</p>
+        <p className={styles.sub}>
+          {hasPlan
+            ? 'Sign in to continue your vocal practice.'
+            : 'Sign in to get your personalized vocal health plan.'}
+        </p>
 
         {error && <div className={styles.error}>{error}</div>}
 
